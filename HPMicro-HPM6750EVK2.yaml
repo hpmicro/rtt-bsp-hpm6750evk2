@@ -1,0 +1,772 @@
+board:
+  buy_url_cn: http://www.hpmicro.com
+  buy_url_global: http://www.hpmicro.com
+  debug_interface: JTAG
+  debugger: FT2232
+  description_en: HPM6750EVK2 is a development board based on the RISC-V core launched by HPMicro, with rich on-board resources and on-chip resources for Display, Audio, motor control, etc.
+  description_zh: HPM6750EVK2 是由先楫半导体推出的一款基于RISCV内核的开发板，带有丰富的片上资源和板上资源，可用于显示，音频，电机控制等应用。
+  emulator_machine: ''
+  large_image: documents/images/board_6750evk2_large.png
+  name: HPM6750EVK2
+  price_cn: 568.00 CNY
+  price_global: 86.00 USD
+  sale_contact_cn: http://www.hpmicro.com/
+  sale_contact_global: http://www.hpmicro.com/
+  small_image: documents/images/board_6750evk2_small.png
+  vendor: HPMicro
+  version: Rev.A
+chip:
+  chip_name: HPM6750
+  clock_source: HSE
+  device_vendor: HPMicro
+  family_name: HPM6000
+  rx_name: PY07
+  series_name: HPM6000
+  source_freq: '24000000'
+  sub_series_name: HPM6750
+  target_freq: '8160000000'
+  tx_name: PY06
+  uart_name: UART0
+
+docs:
+- category: manual
+  file: documents/manuals/HPM6750EVK2_UG_V1.0.pdf
+  title: HPM6750EVK2 Quick Start Guide
+- category: sheet
+  file: documents/sheet/HPM6700_6400_DS_V2_1.pdf
+  title: HPM6750 Datasheet
+features:
+- 'MCU: HPM6750, main frequency 816MHz, 2MBytes SRAM'
+- 'RGB LEDs'
+- 'On-Board 16MBytes QSPI NOR FLASH, On-Board 32MBytes 32-bit SDRAM'
+- 'Buttons: 3, RESET, WBUTN, PBUTN'
+- 'Debug Interface: 10-PIN JTAG interface'
+- 'On-board double Ethernets: 100M, 1000M'
+- 'On-board Beeper'
+features_zh:
+- 'MCU: HPM6750, 主频 816MHz, 2MBytes SRAM'
+- 'RGB LED灯'
+- '按键： 3, RESET, WBUTN, PBUTN'
+- '板载 16MB QSPI NOR 闪存，板载 32MB 32-bit SDRAM'
+- '调试接口: 10-PIN JTAG接口'
+- '板载双路以太网: 百兆、千兆'
+- '板载蜂鸣器'
+pkg_type: Board_Support_Packages
+pkg_vendor: HPMicro
+pkg_version: 1.1.0
+
+template_projects:
+- project_name: blink_led
+  project_description: create this project if user choose rt-thread project
+  project_type: rt-thread|@full|@4.1.0
+  builtin_files:
+  - source_path_offset: projects/blink_led
+    target_path_offset: ''
+    files_and_folders:
+    - applications
+    - Kconfig
+    - rtconfig.h
+    - rtconfig.py
+    - SConscript
+    - SConstruct
+    - .cproject
+    - .project
+    - makefile.targets
+    - .settings
+    - .config
+  - source_path_offset: 'common'
+    target_path_offset: ''
+    files_and_folders:
+    - libraries
+    - rt-thread
+    - startup
+  - source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders:
+    - board
+  external_files:
+  - package_name: RISC-V-GCC-RV32
+    package_type: ToolChain_Support_Packages
+    package_vendor: 'RISC-V'
+    package_version: '2022-04-12'
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+  - package_name: OpenOCD-HPMicro
+    package_type: Debugger_Support_Packages
+    package_vendor: 'HPMicro'
+    package_version: 0.3.0
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+
+example_projects:
+- project_name: blink_led
+  project_description: create this project if user choose rt-thread project
+  project_type: rt-thread|@full|@4.1.0
+  builtin_files:
+  - source_path_offset: projects/blink_led
+    target_path_offset: ''
+    files_and_folders:
+    - applications
+    - Kconfig
+    - rtconfig.h
+    - rtconfig.py
+    - SConscript
+    - SConstruct
+    - .cproject
+    - .project
+    - makefile.targets
+    - .settings
+    - .config
+  - source_path_offset: 'common'
+    target_path_offset: ''
+    files_and_folders:
+    - libraries
+    - rt-thread
+    - startup
+  - source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders:
+    - board
+  external_files:
+  - package_name: RISC-V-GCC-RV32
+    package_type: ToolChain_Support_Packages
+    package_vendor: 'RISC-V'
+    package_version: '2022-04-12'
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+  - package_name: OpenOCD-HPMicro
+    package_type: Debugger_Support_Packages
+    package_vendor: 'HPMicro'
+    package_version: 0.3.0
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+
+- project_name: lv_demo_widgets
+  project_description: create this project if user choose rt-thread project
+  project_type: rt-thread|@full|@4.1.0
+  builtin_files:
+  - source_path_offset: projects/lv_demo_widgets
+    target_path_offset: ''
+    files_and_folders:
+    - applications
+    - Kconfig
+    - rtconfig.h
+    - rtconfig.py
+    - SConscript
+    - SConstruct
+    - .cproject
+    - .project
+    - makefile.targets
+    - .settings
+    - .config
+    - packages
+  - source_path_offset: 'common'
+    target_path_offset: ''
+    files_and_folders:
+    - libraries
+    - rt-thread
+    - startup
+  - source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders:
+    - board
+  external_files:
+  - package_name: RISC-V-GCC-RV32
+    package_type: ToolChain_Support_Packages
+    package_vendor: 'RISC-V'
+    package_version: '2022-04-12'
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+  - package_name: OpenOCD-HPMicro
+    package_type: Debugger_Support_Packages
+    package_vendor: 'HPMicro'
+    package_version: 0.3.0
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+
+- project_name: sdcard_demo
+  project_description: create this project if user choose rt-thread project
+  project_type: rt-thread|@full|@4.1.0
+  builtin_files:
+  - source_path_offset: projects/sdcard_demo
+    target_path_offset: ''
+    files_and_folders:
+    - applications
+    - Kconfig
+    - rtconfig.h
+    - rtconfig.py
+    - SConscript
+    - SConstruct
+    - .cproject
+    - .project
+    - makefile.targets
+    - .settings
+    - .config
+  - source_path_offset: 'common'
+    target_path_offset: ''
+    files_and_folders:
+    - libraries
+    - rt-thread
+    - startup
+  - source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders:
+    - board
+  external_files:
+  - package_name: RISC-V-GCC-RV32
+    package_type: ToolChain_Support_Packages
+    package_vendor: 'RISC-V'
+    package_version: '2022-04-12'
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+  - package_name: OpenOCD-HPMicro
+    package_type: Debugger_Support_Packages
+    package_vendor: 'HPMicro'
+    package_version: 0.3.0
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+
+- project_name: timer_demo
+  project_description: create this project if user choose rt-thread project
+  project_type: rt-thread|@full|@4.1.0
+  builtin_files:
+  - source_path_offset: projects/timer_demo
+    target_path_offset: ''
+    files_and_folders:
+    - applications
+    - Kconfig
+    - rtconfig.h
+    - rtconfig.py
+    - SConscript
+    - SConstruct
+    - .cproject
+    - .project
+    - makefile.targets
+    - .settings
+    - .config
+  - source_path_offset: 'common'
+    target_path_offset: ''
+    files_and_folders:
+    - libraries
+    - rt-thread
+    - startup
+  - source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders:
+    - board
+  external_files:
+  - package_name: RISC-V-GCC-RV32
+    package_type: ToolChain_Support_Packages
+    package_vendor: 'RISC-V'
+    package_version: '2022-04-12'
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+  - package_name: OpenOCD-HPMicro
+    package_type: Debugger_Support_Packages
+    package_vendor: 'HPMicro'
+    package_version: 0.3.0
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+
+- project_name: usb_device_generic_hid
+  project_description: create this project if user choose rt-thread project
+  project_type: rt-thread|@full|@4.1.0
+  builtin_files:
+  - source_path_offset: projects/usb_device_generic_hid
+    target_path_offset: ''
+    files_and_folders:
+    - applications
+    - Kconfig
+    - rtconfig.h
+    - rtconfig.py
+    - SConscript
+    - SConstruct
+    - .cproject
+    - .project
+    - makefile.targets
+    - .settings
+    - .config
+    - packages
+  - source_path_offset: 'common'
+    target_path_offset: ''
+    files_and_folders:
+    - libraries
+    - rt-thread
+    - startup
+  - source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders:
+    - board
+  external_files:
+  - package_name: RISC-V-GCC-RV32
+    package_type: ToolChain_Support_Packages
+    package_vendor: 'RISC-V'
+    package_version: '2022-04-12'
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+  - package_name: OpenOCD-HPMicro
+    package_type: Debugger_Support_Packages
+    package_vendor: 'HPMicro'
+    package_version: 0.3.0
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+
+- project_name: flashdb_demo
+  project_description: create this project if user choose rt-thread project
+  project_type: rt-thread|@full|@4.1.0
+  builtin_files:
+  - source_path_offset: projects/flashdb_demo
+    target_path_offset: ''
+    files_and_folders:
+    - applications
+    - packages
+    - Kconfig
+    - rtconfig.h
+    - rtconfig.py
+    - SConscript
+    - SConstruct
+    - .cproject
+    - .project
+    - makefile.targets
+    - .settings
+    - .config
+  - source_path_offset: 'common'
+    target_path_offset: ''
+    files_and_folders:
+    - libraries
+    - rt-thread
+    - startup
+  - source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders:
+    - board
+  external_files:
+  - package_name: RISC-V-GCC-RV32
+    package_type: ToolChain_Support_Packages
+    package_vendor: 'RISC-V'
+    package_version: '2022-04-12'
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+  - package_name: OpenOCD-HPMicro
+    package_type: Debugger_Support_Packages
+    package_vendor: 'HPMicro'
+    package_version: 0.3.0
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+
+
+- project_name: uart_dma_demo
+  project_description: create this project if user choose rt-thread project
+  project_type: rt-thread|@full|@4.1.0
+  builtin_files:
+  - source_path_offset: projects/uart_dma_demo
+    target_path_offset: ''
+    files_and_folders:
+    - applications
+    - Kconfig
+    - rtconfig.h
+    - rtconfig.py
+    - SConscript
+    - SConstruct
+    - .cproject
+    - .project
+    - makefile.targets
+    - .settings
+    - .config
+  - source_path_offset: 'common'
+    target_path_offset: ''
+    files_and_folders:
+    - libraries
+    - rt-thread
+    - startup
+  - source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders:
+    - board
+  external_files:
+  - package_name: RISC-V-GCC-RV32
+    package_type: ToolChain_Support_Packages
+    package_vendor: 'RISC-V'
+    package_version: '2022-04-12'
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+  - package_name: OpenOCD-HPMicro
+    package_type: Debugger_Support_Packages
+    package_vendor: 'HPMicro'
+    package_version: 0.3.0
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+
+- project_name: can_example
+  project_description: create this project if user choose rt-thread project
+  project_type: rt-thread|@full|@4.1.0
+  builtin_files:
+  - source_path_offset: projects/can_example
+    target_path_offset: ''
+    files_and_folders:
+    - applications
+    - Kconfig
+    - rtconfig.h
+    - rtconfig.py
+    - SConscript
+    - SConstruct
+    - .cproject
+    - .project
+    - makefile.targets
+    - .settings
+    - .config
+  - source_path_offset: 'common'
+    target_path_offset: ''
+    files_and_folders:
+    - libraries
+    - rt-thread
+    - startup
+  - source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders:
+    - board
+  external_files:
+  - package_name: RISC-V-GCC-RV32
+    package_type: ToolChain_Support_Packages
+    package_vendor: 'RISC-V'
+    package_version: '2022-04-12'
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+  - package_name: OpenOCD-HPMicro
+    package_type: Debugger_Support_Packages
+    package_vendor: 'HPMicro'
+    package_version: 0.3.0
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+
+- project_name: ethernet_demo
+  project_description: create this project if user choose rt-thread project
+  project_type: rt-thread|@full|@4.1.0
+  builtin_files:
+  - source_path_offset: projects/ethernet_demo
+    target_path_offset: ''
+    files_and_folders:
+    - applications
+    - Kconfig
+    - rtconfig.h
+    - rtconfig.py
+    - SConscript
+    - SConstruct
+    - .cproject
+    - .project
+    - makefile.targets
+    - .settings
+    - .config
+    - packages
+  - source_path_offset: 'common'
+    target_path_offset: ''
+    files_and_folders:
+    - libraries
+    - rt-thread
+    - startup
+  - source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders:
+    - board
+  external_files:
+  - package_name: RISC-V-GCC-RV32
+    package_type: ToolChain_Support_Packages
+    package_vendor: 'RISC-V'
+    package_version: '2022-04-12'
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+  - package_name: OpenOCD-HPMicro
+    package_type: Debugger_Support_Packages
+    package_vendor: 'HPMicro'
+    package_version: 0.3.0
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+
+- project_name: ethernet_ptp_master_demo
+  project_description: create this project if user choose rt-thread project
+  project_type: rt-thread|@full|@4.1.0
+  builtin_files:
+  - source_path_offset: projects/ethernet_ptp_master_demo
+    target_path_offset: ''
+    files_and_folders:
+    - applications
+    - Kconfig
+    - rtconfig.h
+    - rtconfig.py
+    - SConscript
+    - SConstruct
+    - .cproject
+    - .project
+    - makefile.targets
+    - .settings
+    - .config
+    - packages
+  - source_path_offset: 'common'
+    target_path_offset: ''
+    files_and_folders:
+    - libraries
+    - rt-thread
+    - startup
+  - source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders:
+    - board
+  external_files:
+  - package_name: RISC-V-GCC-RV32
+    package_type: ToolChain_Support_Packages
+    package_vendor: 'RISC-V'
+    package_version: '2022-04-12'
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+  - package_name: OpenOCD-HPMicro
+    package_type: Debugger_Support_Packages
+    package_vendor: 'HPMicro'
+    package_version: 0.3.0
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+
+- project_name: ethernet_ptp_slave_demo
+  project_description: create this project if user choose rt-thread project
+  project_type: rt-thread|@full|@4.1.0
+  builtin_files:
+  - source_path_offset: projects/ethernet_ptp_slave_demo
+    target_path_offset: ''
+    files_and_folders:
+    - applications
+    - Kconfig
+    - rtconfig.h
+    - rtconfig.py
+    - SConscript
+    - SConstruct
+    - .cproject
+    - .project
+    - makefile.targets
+    - .settings
+    - .config
+    - packages
+  - source_path_offset: 'common'
+    target_path_offset: ''
+    files_and_folders:
+    - libraries
+    - rt-thread
+    - startup
+  - source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders:
+    - board
+  external_files:
+  - package_name: RISC-V-GCC-RV32
+    package_type: ToolChain_Support_Packages
+    package_vendor: 'RISC-V'
+    package_version: '2022-04-12'
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+  - package_name: OpenOCD-HPMicro
+    package_type: Debugger_Support_Packages
+    package_vendor: 'HPMicro'
+    package_version: 0.3.0
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+
+- project_name: i2c_demo
+  project_description: create this project if user choose rt-thread project
+  project_type: rt-thread|@full|@4.1.0
+  builtin_files:
+  - source_path_offset: projects/i2c_demo
+    target_path_offset: ''
+    files_and_folders:
+    - applications
+    - Kconfig
+    - rtconfig.h
+    - rtconfig.py
+    - SConscript
+    - SConstruct
+    - .cproject
+    - .project
+    - makefile.targets
+    - .settings
+    - .config
+  - source_path_offset: 'common'
+    target_path_offset: ''
+    files_and_folders:
+    - libraries
+    - rt-thread
+    - startup
+  - source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders:
+    - board
+  external_files:
+  - package_name: RISC-V-GCC-RV32
+    package_type: ToolChain_Support_Packages
+    package_vendor: 'RISC-V'
+    package_version: '2022-04-12'
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+  - package_name: OpenOCD-HPMicro
+    package_type: Debugger_Support_Packages
+    package_vendor: 'HPMicro'
+    package_version: 0.3.0
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+
+- project_name: usb_host_msc_udisk
+  project_description: create this project if user choose rt-thread project
+  project_type: rt-thread|@full|@4.1.0
+  builtin_files:
+  - source_path_offset: projects/usb_host_msc_udisk
+    target_path_offset: ''
+    files_and_folders:
+    - applications
+    - Kconfig
+    - rtconfig.h
+    - rtconfig.py
+    - SConscript
+    - SConstruct
+    - .cproject
+    - .project
+    - makefile.targets
+    - .settings
+    - .config
+    - packages
+  - source_path_offset: 'common'
+    target_path_offset: ''
+    files_and_folders:
+    - libraries
+    - rt-thread
+    - startup
+  - source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders:
+    - board
+  external_files:
+  - package_name: RISC-V-GCC-RV32
+    package_type: ToolChain_Support_Packages
+    package_vendor: 'RISC-V'
+    package_version: '2022-04-12'
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+  - package_name: OpenOCD-HPMicro
+    package_type: Debugger_Support_Packages
+    package_vendor: 'HPMicro'
+    package_version: 0.3.0
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+
+- project_name: audio_i2s_demo
+  project_description: create this project if user choose rt-thread project
+  project_type: rt-thread|@full|@4.1.0
+  builtin_files:
+  - source_path_offset: projects/audio_i2s_demo
+    target_path_offset: ''
+    files_and_folders:
+    - applications
+    - Kconfig
+    - rtconfig.h
+    - rtconfig.py
+    - SConscript
+    - SConstruct
+    - .cproject
+    - .project
+    - makefile.targets
+    - .settings
+    - .config
+  - source_path_offset: 'common'
+    target_path_offset: ''
+    files_and_folders:
+    - libraries
+    - rt-thread
+    - startup
+  - source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders:
+    - board
+  external_files:
+  - package_name: RISC-V-GCC-RV32
+    package_type: ToolChain_Support_Packages
+    package_vendor: 'RISC-V'
+    package_version: '2022-04-12'
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+  - package_name: OpenOCD-HPMicro
+    package_type: Debugger_Support_Packages
+    package_vendor: 'HPMicro'
+    package_version: 0.3.0
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+
+- project_name: audio_pdm_dao_demo
+  project_description: create this project if user choose rt-thread project
+  project_type: rt-thread|@full|@4.1.0
+  builtin_files:
+  - source_path_offset: projects/audio_pdm_dao_demo
+    target_path_offset: ''
+    files_and_folders:
+    - applications
+    - Kconfig
+    - rtconfig.h
+    - rtconfig.py
+    - SConscript
+    - SConstruct
+    - .cproject
+    - .project
+    - makefile.targets
+    - .settings
+    - .config
+  - source_path_offset: 'common'
+    target_path_offset: ''
+    files_and_folders:
+    - libraries
+    - rt-thread
+    - startup
+  - source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders:
+    - board
+  external_files:
+  - package_name: RISC-V-GCC-RV32
+    package_type: ToolChain_Support_Packages
+    package_vendor: 'RISC-V'
+    package_version: '2022-04-12'
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+  - package_name: OpenOCD-HPMicro
+    package_type: Debugger_Support_Packages
+    package_vendor: 'HPMicro'
+    package_version: 0.3.0
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
+
+yaml_version: 3
