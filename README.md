@@ -21,3 +21,12 @@ RT-Thread Studio BSP for HPM6750EVK Board
 - usb_host_msc_udisk
 - audio_i2s_demo
 - audio_pdm_dao_demo
+
+## Environment Setup
+
+### Toolchain setup
+
+- After installing the BSP package, users need to set the `RTT_RISCV_TOOLCHAIN` environment variable before creating any examples/projects
+    - Assuming that the toolchain is installed in `C:\DevTools\RT-ThreadStudio\repo\Extract\ToolChain_Support_Packages\RISC-V\RISC-V-GCC-RV32\2022-04-12\bin`, User can set the `RTT_RISCV_TOOLCHAIN` environment variable referring below figure:
+
+![Set RTT_RISCV_TOOLCHAIN environment variable](documents/images/set_rtt_riscv_toolchain_env.png)

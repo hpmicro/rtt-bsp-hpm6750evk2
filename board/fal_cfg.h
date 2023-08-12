@@ -32,7 +32,8 @@ extern struct fal_flash_dev nor_flash0;
 {                                                                                    \
     {FAL_PART_MAGIC_WORD,       "app", NOR_FLASH_DEV_NAME,         0,           4*1024*1024,    0}, \
     {FAL_PART_MAGIC_WORD, "easyflash", NOR_FLASH_DEV_NAME,         4*1024*1024, 3*1024*1024,    0}, \
-    {FAL_PART_MAGIC_WORD,  "download", NOR_FLASH_DEV_NAME,         7*1024*1024, 9*1024*1024,    0}, \
+    {FAL_PART_MAGIC_WORD,  "download", NOR_FLASH_DEV_NAME,         7*1024*1024, 8*1024*1024,    0}, \
+    {FAL_PART_MAGIC_WORD,   "flashdb", NOR_FLASH_DEV_NAME,        15*1024*1024, 1*1024*1024,    0}, \
 }
 #endif /* FAL_PART_HAS_TABLE_CFG */
 #endif /* RT_USING_FAL */

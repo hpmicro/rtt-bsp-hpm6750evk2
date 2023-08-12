@@ -42,7 +42,6 @@ features:
 - 'Buttons: 3, RESET, WBUTN, PBUTN'
 - 'Debug Interface: 10-PIN JTAG interface'
 - 'On-board double Ethernets: 100M, 1000M'
-- 'On-board Beeper'
 features_zh:
 - 'MCU: HPM6750, 主频 816MHz, 2MBytes SRAM'
 - 'RGB LED灯'
@@ -50,15 +49,14 @@ features_zh:
 - '板载 16MB QSPI NOR 闪存，板载 32MB 32-bit SDRAM'
 - '调试接口: 10-PIN JTAG接口'
 - '板载双路以太网: 百兆、千兆'
-- '板载蜂鸣器'
 pkg_type: Board_Support_Packages
 pkg_vendor: HPMicro
-pkg_version: 1.1.0
+pkg_version: 1.2.0
 
 template_projects:
 - project_name: blink_led
   project_description: create this project if user choose rt-thread project
-  project_type: rt-thread|@full|@4.1.0
+  project_type: rt-thread|@full|@5.0.1
   builtin_files:
   - source_path_offset: projects/blink_led
     target_path_offset: ''
@@ -74,6 +72,7 @@ template_projects:
     - makefile.targets
     - .settings
     - .config
+    - README.md
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -99,11 +98,18 @@ template_projects:
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
+  - package_name: J-Link
+    package_type: Debugger_Support_Packages
+    package_vendor: 'SEGGER'
+    package_version: v7.92
+    source_path_offset: ''
+    target_path_offset: ''
+    files_and_folders: []
 
 example_projects:
 - project_name: blink_led
   project_description: create this project if user choose rt-thread project
-  project_type: rt-thread|@full|@4.1.0
+  project_type: rt-thread|@full|@5.0.1
   builtin_files:
   - source_path_offset: projects/blink_led
     target_path_offset: ''
@@ -119,6 +125,7 @@ example_projects:
     - makefile.targets
     - .settings
     - .config
+    - README.md
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -147,7 +154,7 @@ example_projects:
 
 - project_name: lv_demo_widgets
   project_description: create this project if user choose rt-thread project
-  project_type: rt-thread|@full|@4.1.0
+  project_type: rt-thread|@full|@5.0.1
   builtin_files:
   - source_path_offset: projects/lv_demo_widgets
     target_path_offset: ''
@@ -164,6 +171,7 @@ example_projects:
     - .settings
     - .config
     - packages
+    - README.md
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -192,7 +200,7 @@ example_projects:
 
 - project_name: sdcard_demo
   project_description: create this project if user choose rt-thread project
-  project_type: rt-thread|@full|@4.1.0
+  project_type: rt-thread|@full|@5.0.1
   builtin_files:
   - source_path_offset: projects/sdcard_demo
     target_path_offset: ''
@@ -208,6 +216,7 @@ example_projects:
     - makefile.targets
     - .settings
     - .config
+    - README.md
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -236,7 +245,7 @@ example_projects:
 
 - project_name: timer_demo
   project_description: create this project if user choose rt-thread project
-  project_type: rt-thread|@full|@4.1.0
+  project_type: rt-thread|@full|@5.0.1
   builtin_files:
   - source_path_offset: projects/timer_demo
     target_path_offset: ''
@@ -252,6 +261,7 @@ example_projects:
     - makefile.targets
     - .settings
     - .config
+    - README.md
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -280,7 +290,7 @@ example_projects:
 
 - project_name: usb_device_generic_hid
   project_description: create this project if user choose rt-thread project
-  project_type: rt-thread|@full|@4.1.0
+  project_type: rt-thread|@full|@5.0.1
   builtin_files:
   - source_path_offset: projects/usb_device_generic_hid
     target_path_offset: ''
@@ -297,6 +307,7 @@ example_projects:
     - .settings
     - .config
     - packages
+    - README.md
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -325,7 +336,7 @@ example_projects:
 
 - project_name: flashdb_demo
   project_description: create this project if user choose rt-thread project
-  project_type: rt-thread|@full|@4.1.0
+  project_type: rt-thread|@full|@5.0.1
   builtin_files:
   - source_path_offset: projects/flashdb_demo
     target_path_offset: ''
@@ -342,6 +353,7 @@ example_projects:
     - makefile.targets
     - .settings
     - .config
+    - README.md
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -371,7 +383,7 @@ example_projects:
 
 - project_name: uart_dma_demo
   project_description: create this project if user choose rt-thread project
-  project_type: rt-thread|@full|@4.1.0
+  project_type: rt-thread|@full|@5.0.1
   builtin_files:
   - source_path_offset: projects/uart_dma_demo
     target_path_offset: ''
@@ -387,6 +399,7 @@ example_projects:
     - makefile.targets
     - .settings
     - .config
+    - README.md
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -415,7 +428,7 @@ example_projects:
 
 - project_name: can_example
   project_description: create this project if user choose rt-thread project
-  project_type: rt-thread|@full|@4.1.0
+  project_type: rt-thread|@full|@5.0.1
   builtin_files:
   - source_path_offset: projects/can_example
     target_path_offset: ''
@@ -431,6 +444,7 @@ example_projects:
     - makefile.targets
     - .settings
     - .config
+    - README.md
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -459,7 +473,7 @@ example_projects:
 
 - project_name: ethernet_demo
   project_description: create this project if user choose rt-thread project
-  project_type: rt-thread|@full|@4.1.0
+  project_type: rt-thread|@full|@5.0.1
   builtin_files:
   - source_path_offset: projects/ethernet_demo
     target_path_offset: ''
@@ -475,6 +489,7 @@ example_projects:
     - makefile.targets
     - .settings
     - .config
+    - README.md
     - packages
   - source_path_offset: 'common'
     target_path_offset: ''
@@ -504,7 +519,7 @@ example_projects:
 
 - project_name: ethernet_ptp_master_demo
   project_description: create this project if user choose rt-thread project
-  project_type: rt-thread|@full|@4.1.0
+  project_type: rt-thread|@full|@5.0.1
   builtin_files:
   - source_path_offset: projects/ethernet_ptp_master_demo
     target_path_offset: ''
@@ -521,6 +536,7 @@ example_projects:
     - .settings
     - .config
     - packages
+    - README.md
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -549,7 +565,7 @@ example_projects:
 
 - project_name: ethernet_ptp_slave_demo
   project_description: create this project if user choose rt-thread project
-  project_type: rt-thread|@full|@4.1.0
+  project_type: rt-thread|@full|@5.0.1
   builtin_files:
   - source_path_offset: projects/ethernet_ptp_slave_demo
     target_path_offset: ''
@@ -566,6 +582,7 @@ example_projects:
     - .settings
     - .config
     - packages
+    - README.md
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -594,7 +611,7 @@ example_projects:
 
 - project_name: i2c_demo
   project_description: create this project if user choose rt-thread project
-  project_type: rt-thread|@full|@4.1.0
+  project_type: rt-thread|@full|@5.0.1
   builtin_files:
   - source_path_offset: projects/i2c_demo
     target_path_offset: ''
@@ -610,6 +627,7 @@ example_projects:
     - makefile.targets
     - .settings
     - .config
+    - README.md
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -638,7 +656,7 @@ example_projects:
 
 - project_name: usb_host_msc_udisk
   project_description: create this project if user choose rt-thread project
-  project_type: rt-thread|@full|@4.1.0
+  project_type: rt-thread|@full|@5.0.1
   builtin_files:
   - source_path_offset: projects/usb_host_msc_udisk
     target_path_offset: ''
@@ -655,6 +673,7 @@ example_projects:
     - .settings
     - .config
     - packages
+    - README.md
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -683,7 +702,7 @@ example_projects:
 
 - project_name: audio_i2s_demo
   project_description: create this project if user choose rt-thread project
-  project_type: rt-thread|@full|@4.1.0
+  project_type: rt-thread|@full|@5.0.1
   builtin_files:
   - source_path_offset: projects/audio_i2s_demo
     target_path_offset: ''
@@ -699,6 +718,7 @@ example_projects:
     - makefile.targets
     - .settings
     - .config
+    - README.md
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -727,7 +747,7 @@ example_projects:
 
 - project_name: audio_pdm_dao_demo
   project_description: create this project if user choose rt-thread project
-  project_type: rt-thread|@full|@4.1.0
+  project_type: rt-thread|@full|@5.0.1
   builtin_files:
   - source_path_offset: projects/audio_pdm_dao_demo
     target_path_offset: ''
@@ -743,6 +763,7 @@ example_projects:
     - makefile.targets
     - .settings
     - .config
+    - README.md
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:

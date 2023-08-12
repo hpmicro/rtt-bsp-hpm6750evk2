@@ -3,4 +3,4 @@ clean2:
 	-$(RM) $(OBJS) *.elf
 	-@echo ' '
 
-*.elf: $(wildcard ..D:/RT-ThreadStudio/workspace/ethernet_ptp_slave_demo/board/linker_scripts/flash_rtt_enet.ld)
+*.elf: $(wildcard ../board/linker_scripts/flash_rtt.ld)

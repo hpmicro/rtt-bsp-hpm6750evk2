@@ -184,7 +184,7 @@ static void phy_poll_status(void *parameter)
 {
     int ret;
     phy_info_t phy_info;
-    rt_uint32_t status;
+    rt_bool_t status;
     rt_device_t dev;
     rt_phy_msg_t msg;
     rt_uint32_t speed, duplex;

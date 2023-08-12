@@ -1,24 +1,26 @@
 /*
- * Copyright 2021 - 2022 hpmicro
+ * Copyright 2021-2023 HPMicro
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 ENTRY(_start)
 
 STACK_SIZE = DEFINED(_stack_size) ? _stack_size : 0x4000;
-HEAP_SIZE = DEFINED(_heap_size) ? _heap_size : 1M;
+HEAP_SIZE = DEFINED(_heap_size) ? _heap_size : 256K;
 FLASH_SIZE = DEFINED(_flash_size) ? _flash_size : 16M;
+NONCACHEABLE_SIZE = DEFINED(_noncacheable_size) ? _noncacheable_size : 256K;
 SDRAM_SIZE = DEFINED(_sdram_size) ? _sdram_size : 32M;
-NONCACHEABLE_SIZE = DEFINED(_noncacheable_size) ? _noncacheable_size : 1M;
 
 MEMORY
 {
     XPI0 (rx) : ORIGIN = 0x80000000, LENGTH = FLASH_SIZE
     ILM (wx) : ORIGIN = 0, LENGTH = 256K
     DLM (w) : ORIGIN = 0x80000, LENGTH = 256K
-    AXI_SRAM (wx) : ORIGIN = 0x1080000, LENGTH = 512K
+    AXI_SRAM (wx) : ORIGIN = 0x1080000, LENGTH = 1280K
+    NONCACHEABLE_RAM (wx) : ORIGIN = 0x11C0000, LENGTH = NONCACHEABLE_SIZE
     SDRAM (wx) : ORIGIN = 0x40000000, LENGTH = SDRAM_SIZE
-    AXI_SRAM_NONCACHEABLE (wx) : ORIGIN = 0x01100000, LENGTH = NONCACHEABLE_SIZE
+    AHB_SRAM (w) : ORIGIN = 0xF0300000, LENGTH = 32k
+    APB_SRAM (w): ORIGIN = 0xF40F0000, LENGTH = 8k
 }
 
 __nor_cfg_option_load_addr__ = ORIGIN(XPI0) + 0x400;
@@ -57,38 +59,59 @@ SECTIONS
         __vector_ram_end__ = .;
     } > AXI_SRAM
 
-    .fast : AT(etext + __data_end__ - __data_start__) {
+    .fast : AT(etext + __data_end__ - __tdata_start__) {
         . = ALIGN(8);
         __ramfunc_start__ = .;
         *(.fast)
 
         /* RT-Thread Core Start */
         KEEP(*context_gcc.o(.text* .rodata*))
-        KEEP(*cpuport.o (.text .text* .rodata .rodata*))
-        KEEP(*trap_entry.o (.text .text* .rodata .rodata*))
+        KEEP(*port*.o (.text .text* .rodata .rodata*))
+        KEEP(*interrupt_gcc.o (.text .text* .rodata .rodata*))
+        KEEP(*trap_common.o (.text .text* .rodata .rodata*))
         KEEP(*irq.o (.text .text* .rodata .rodata*))
         KEEP(*clock.o (.text .text* .rodata .rodata*))
         KEEP(*kservice.o (.text .text* .rodata .rodata*))
         KEEP(*scheduler.o (.text .text* .rodata .rodata*))
-        KEEP(*trap.o (.text .text* .rodata .rodata*))
+        KEEP(*trap*.o (.text .text* .rodata .rodata*))
         KEEP(*idle.o (.text .text* .rodata .rodata*))
         KEEP(*ipc.o (.text .text* .rodata .rodata*))
         KEEP(*thread.o (.text .text* .rodata .rodata*))
-		KEEP(*object.o (.text .text* .rodata .rodata*))
+        KEEP(*object.o (.text .text* .rodata .rodata*))
         KEEP(*timer.o (.text .text* .rodata .rodata*))
         KEEP(*mem.o (.text .text* .rodata .rodata*))
         KEEP(*mempool.o (.text .text* .rodata .rodata*))
-        KEEP(*drv_*.o (.text .text* .rodata .rodata*))
         /* RT-Thread Core End */
+
+        /* HPMicro Driver Wrapper */
+        KEEP(*drv_*.o (.text .text* .rodata .rodata*))
+        KEEP(*api_lib*.o (.text .text* .rodata .rodata*))
+        KEEP(*api_msg*.o (.text .text* .rodata .rodata*))
+        KEEP(*if_api*.o (.text .text* .rodata .rodata*))
+        KEEP(*netbuf*.o (.text .text* .rodata .rodata*))
+        KEEP(*netdb*.o (.text .text* .rodata .rodata*))
+        KEEP(*netifapi*.o (.text .text* .rodata .rodata*))
+        KEEP(*sockets*.o (.text .text* .rodata .rodata*))
+        KEEP(*tcpip*.o (.text .text* .rodata .rodata*))
+        KEEP(*inet_chksum*.o (.text .text* .rodata .rodata*))
+        KEEP(*ip*.o (.text .text* .rodata .rodata*))
+        KEEP(*memp*.o (.text .text* .rodata .rodata*))
+        KEEP(*netif*.o (.text .text* .rodata .rodata*))
+        KEEP(*pbuf*.o (.text .text* .rodata .rodata*))
+        KEEP(*tcp_in*.o (.text .text* .rodata .rodata*))
+        KEEP(*tcp_out*.o (.text .text* .rodata .rodata*))
+        KEEP(*tcp*.o (.text .text* .rodata .rodata*))
+        KEEP(*ethernet*.o (.text .text* .rodata .rodata*))
+        KEEP(*ethernetif*.o (.text .text* .rodata .rodata*))
 
         . = ALIGN(8);
         __ramfunc_end__ = .;
     } > AXI_SRAM
-	
-	.fast_ram (NOLOAD) : {
+
+    .fast_ram (NOLOAD) : {
         KEEP(*(.fast_ram))
     } > DLM
-	
+    
     .text (__vector_load_addr__ + __vector_ram_end__ - __vector_ram_start__) : {
         . = ALIGN(8);
         *(.text)
@@ -150,7 +173,42 @@ SECTIONS
     PROVIDE (_etext = .);
     PROVIDE (etext = .);
 
-    .data : AT(etext) {
+    .bss(NOLOAD) : {
+        . = ALIGN(8);
+        __bss_start__ = .;
+        *(.bss)
+        *(.bss*)
+        *(.sbss*)
+        *(.scommon)
+        *(.scommon*)
+        *(.dynsbss*)
+        *(COMMON)
+        . = ALIGN(8);
+        _end = .;
+        __bss_end__ = .;
+    } > AXI_SRAM
+
+    /* Note: the .tbss and .tdata section should be adjacent */
+    .tbss(NOLOAD) : {
+        . = ALIGN(8);
+        __tbss_start__ = .;
+        *(.tbss*)
+        *(.tcommon*)
+        _end = .;
+        __tbss_end__ = .;
+    } > AXI_SRAM
+
+    .tdata : AT(etext) {
+        . = ALIGN(8);
+        __tdata_start__ = .;
+        __thread_pointer = .;
+        *(.tdata)
+        *(.tdata*)
+        . = ALIGN(8);
+        __tdata_end__ = .;
+    } > AXI_SRAM
+
+    .data : AT(etext + __tdata_end__ - __tdata_start__) {
         . = ALIGN(8);
         __data_start__ = .;
         __global_pointer$ = . + 0x800;
@@ -158,8 +216,6 @@ SECTIONS
         *(.data*)
         *(.sdata)
         *(.sdata*)
-        *(.tdata)
-        *(.tdata*)
 
         KEEP(*(.jcr))
         KEEP(*(.dynamic))
@@ -203,60 +259,64 @@ SECTIONS
         PROVIDE (__edata = .);
         PROVIDE (_edata = .);
         PROVIDE (edata = .);
-    } > SDRAM
-    __fw_size__ = __data_end__ - __data_start__ + etext - __app_load_addr__;
-
-    .noncacheable : AT(etext + __data_end__ - __data_start__ + __ramfunc_end__ - __ramfunc_start__){
-        . = ALIGN(8);
-        __noncacheable_init_start__ = .;
-        KEEP(*(.noncacheable.init))
-        __noncacheable_init_end__ = .;
-        KEEP(*(.noncacheable))
-        __noncacheable_bss_start__ = .;
-        KEEP(*(.noncacheable.bss))
-        __noncacheable_bss_end__ = .;
-        . = ALIGN(8);
-    } > AXI_SRAM_NONCACHEABLE
-
-    .bss : {
-        . = ALIGN(8);
-        __bss_start__ = .;
-        *(.bss)
-        *(.bss*)
-        *(.tbss*)
-        *(.sbss*)
-        *(.scommon)
-        *(.scommon*)
-        *(.tcommon*)
-        *(.dynsbss*)
-        *(COMMON)
-        . = ALIGN(8);
-        _end = .;
-        __bss_end__ = .;
     } > AXI_SRAM
+    __fw_size__ = __data_end__ - __tdata_start__ + etext - __app_load_addr__;
 
-    .heap : {
+    .heap(NOLOAD) : {
         . = ALIGN(8);
         __heap_start__ = .;
         . += HEAP_SIZE;
         __heap_end__ = .;
-    } > SDRAM
+    } > AXI_SRAM
 
     .framebuffer (NOLOAD) : {
         . = ALIGN(8);
         KEEP(*(.framebuffer))
         . = ALIGN(8);
-    } > SDRAM
+    } > AXI_SRAM
 
-    .stack : {
+    .stack(NOLOAD) : {
         . = ALIGN(8);
         __stack_base__ = .;
         . += STACK_SIZE;
         . = ALIGN(8);
         PROVIDE (_stack = .);
         PROVIDE (_stack_in_dlm = .);
+        PROVIDE( __rt_rvstack = . );
     } > AXI_SRAM
 
-    __noncacheable_start__ = ORIGIN(AXI_SRAM_NONCACHEABLE);
-    __noncacheable_end__ = ORIGIN(AXI_SRAM_NONCACHEABLE) + LENGTH(AXI_SRAM_NONCACHEABLE);
+    .noncacheable.init : AT(etext + __data_end__ - __tdata_start__ + __ramfunc_end__ - __ramfunc_start__) {
+        . = ALIGN(8);
+        __noncacheable_init_start__ = .;
+        KEEP(*(.noncacheable.init))
+        __noncacheable_init_end__ = .;
+        . = ALIGN(8);
+    } > NONCACHEABLE_RAM
+
+    .noncacheable.bss (NOLOAD) : {
+        . = ALIGN(8);
+        KEEP(*(.noncacheable))
+        __noncacheable_bss_start__ = .;
+        KEEP(*(.noncacheable.bss))
+        __noncacheable_bss_end__ = .;
+        . = ALIGN(8);
+    } > NONCACHEABLE_RAM
+
+    .ahb_sram (NOLOAD) : {
+        KEEP(*(.ahb_sram))
+    } > AHB_SRAM
+
+    .apb_sram (NOLOAD) : {
+        KEEP(*(.backup_sram))
+    } > APB_SRAM
+
+    __noncacheable_start__ = ORIGIN(NONCACHEABLE_RAM);
+    __noncacheable_end__ = ORIGIN(NONCACHEABLE_RAM) + LENGTH(NONCACHEABLE_RAM);
+
+    .sdram (NOLOAD) : {
+        . = ALIGN(8);
+        __sdram_start__ = .;
+        . += SDRAM_SIZE;
+        __sdram_end__ = .;
+    } > SDRAM
 }

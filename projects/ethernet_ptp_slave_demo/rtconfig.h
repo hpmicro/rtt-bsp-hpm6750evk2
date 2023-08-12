@@ -22,7 +22,6 @@
 
 /* kservice optimization */
 
-#define RT_PRINTF_LONGLONG
 /* end of kservice optimization */
 
 /* Inter-Thread communication */
@@ -49,7 +48,7 @@
 #define RT_CONSOLEBUF_SIZE 128
 #define RT_CONSOLE_DEVICE_NAME "uart0"
 /* end of Kernel Device Object */
-#define RT_VER_NUM 0x40100
+#define RT_VER_NUM 0x50001
 /* end of RT-Thread Kernel */
 
 /* RT-Thread Components */
@@ -71,17 +70,23 @@
 #define MSH_USING_BUILT_IN_COMMANDS
 #define FINSH_USING_DESCRIPTION
 #define FINSH_ARG_MAX 10
+
+/* DFS: device virtual file system */
+
 #define RT_USING_DFS
 #define DFS_USING_POSIX
 #define DFS_USING_WORKDIR
+#define DFS_FD_MAX 16
+#define RT_USING_DFS_V1
 #define DFS_FILESYSTEMS_MAX 4
 #define DFS_FILESYSTEM_TYPES_MAX 4
-#define DFS_FD_MAX 16
 #define RT_USING_DFS_DEVFS
+/* end of DFS: device virtual file system */
 
 /* Device Drivers */
 
 #define RT_USING_DEVICE_IPC
+#define RT_UNAMED_PIPE_NUMBER 64
 #define RT_USING_SYSTEM_WORKQUEUE
 #define RT_SYSTEM_WORKQUEUE_STACKSIZE 2048
 #define RT_SYSTEM_WORKQUEUE_PRIORITY 23
@@ -91,8 +96,6 @@
 #define RT_USING_HWTIMER
 #define RT_USING_PHY
 #define RT_USING_PIN
-#define RT_USING_RTC
-#define RT_USING_SPI
 
 /* Using USB */
 
@@ -124,10 +127,10 @@
 #define RT_USING_SAL
 #define SAL_INTERNET_CHECK
 
-/* protocol stack implement */
+/* Docking with protocol stacks */
 
 #define SAL_USING_LWIP
-/* end of protocol stack implement */
+/* end of Docking with protocol stacks */
 #define SAL_USING_POSIX
 #define RT_USING_NETDEV
 #define NETDEV_USING_IFCONFIG
@@ -145,8 +148,8 @@
 
 /* Static IPv4 Address */
 
-#define RT_LWIP_IPADDR "192.168.11.201"
-#define RT_LWIP_GWADDR "192.168.11.1"
+#define RT_LWIP_IPADDR "10.10.10.10"
+#define RT_LWIP_GWADDR "10.10.10.1"
 #define RT_LWIP_MSKADDR "255.255.255.0"
 /* end of Static IPv4 Address */
 #define RT_LWIP_UDP
@@ -158,12 +161,12 @@
 #define RT_LWIP_UDP_PCB_NUM 4
 #define RT_LWIP_TCP_PCB_NUM 4
 #define RT_LWIP_TCP_SEG_NUM 40
-#define RT_LWIP_TCP_SND_BUF 8196
-#define RT_LWIP_TCP_WND 8196
+#define RT_LWIP_TCP_SND_BUF 14600
+#define RT_LWIP_TCP_WND 14600
 #define RT_LWIP_TCPTHREAD_PRIORITY 10
 #define RT_LWIP_TCPTHREAD_MBOX_SIZE 8
 #define RT_LWIP_TCPTHREAD_STACKSIZE 4096
-#define RT_LWIP_ETHTHREAD_PRIORITY 8
+#define RT_LWIP_ETHTHREAD_PRIORITY 12
 #define RT_LWIP_ETHTHREAD_STACKSIZE 4096
 #define RT_LWIP_ETHTHREAD_MBOX_SIZE 16
 #define LWIP_NETIF_STATUS_CALLBACK 1
@@ -174,6 +177,7 @@
 #define LWIP_SO_RCVBUF 1
 #define LWIP_SO_LINGER 0
 #define LWIP_NETIF_LOOPBACK 0
+#define RT_LWIP_USING_HW_CHECKSUM
 #define RT_LWIP_USING_PING
 /* end of Network */
 
@@ -214,9 +218,6 @@
 #define PKG_USING_NETUTILS
 #define PKG_NETUTILS_IPERF
 #define PKG_NETUTILS_NTP
-#define NTP_USING_AUTO_SYNC
-#define NTP_AUTO_SYNC_FIRST_DELAY 30
-#define NTP_AUTO_SYNC_PERIOD 3600
 #define NETUTILS_NTP_HOSTNAME "cn.ntp.org.cn"
 #define NETUTILS_NTP_HOSTNAME2 "ntp.rt-thread.org"
 #define NETUTILS_NTP_HOSTNAME3 "edu.ntp.org.cn"
@@ -252,6 +253,10 @@
 /* u8g2: a monochrome graphic library */
 
 /* end of u8g2: a monochrome graphic library */
+
+/* PainterEngine: A cross-platform graphics application framework written in C language */
+
+/* end of PainterEngine: A cross-platform graphics application framework written in C language */
 /* end of multimedia packages */
 
 /* tools packages */
@@ -279,13 +284,6 @@
 
 /* peripheral libraries and drivers */
 
-/* sensors drivers */
-
-/* end of sensors drivers */
-
-/* touch drivers */
-
-/* end of touch drivers */
 
 /* Kendryte SDK */
 
@@ -295,10 +293,6 @@
 /* AI packages */
 
 /* end of AI packages */
-
-/* Signal Processing and Control Algorithm Packages */
-
-/* end of Signal Processing and Control Algorithm Packages */
 
 /* miscellaneous packages */
 
@@ -314,6 +308,47 @@
 
 /* end of entertainment: terminal games and other interesting software packages */
 /* end of miscellaneous packages */
+
+/* Arduino libraries */
+
+
+/* Projects */
+
+/* end of Projects */
+
+/* Sensors */
+
+/* end of Sensors */
+
+/* Display */
+
+/* end of Display */
+
+/* Timing */
+
+/* end of Timing */
+
+/* Data Processing */
+
+/* end of Data Processing */
+
+/* Data Storage */
+
+/* Communication */
+
+/* Device Control */
+
+/* end of Device Control */
+
+/* Other */
+
+/* Signal IO */
+
+/* end of Signal IO */
+
+/* Uncategorized */
+
+/* end of Arduino libraries */
 /* end of RT-Thread online packages */
 
 /* Hardware Drivers Config */
@@ -330,7 +365,6 @@
 #define BSP_UART0_TX_DMA_CHANNEL 1
 #define BSP_UART0_RX_BUFSIZE 128
 #define BSP_UART0_TX_BUFSIZE 0
-#define BSP_USING_RTC
 #define BSP_USING_ETH
 #define BSP_USING_ETH1
 #define BSP_USING_GPTMR

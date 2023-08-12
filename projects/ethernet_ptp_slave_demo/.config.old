@@ -649,6 +649,7 @@ CONFIG_PKG_NETUTILS_VER_NUM=0x99999
 # CONFIG_PKG_USING_QPC is not set
 # CONFIG_PKG_USING_AGILE_UPGRADE is not set
 # CONFIG_PKG_USING_FLASH_BLOB is not set
+# CONFIG_PKG_USING_MLIBC is not set
 # end of system packages
 
 #

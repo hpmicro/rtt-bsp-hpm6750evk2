@@ -260,10 +260,10 @@ static int codec_playwav(int argc, char *argv[])
     i2s_caps.udata.config.samplerate = info->fmt_chunk.sample_rate;
     i2s_caps.udata.config.samplebits = info->fmt_chunk.bit_per_sample;
     if (info->fmt_chunk.channels == 1) {
-        //单声道选用左或右声道播放
-        i2s_caps.udata.config.channels = CODEC_I2S_CHANNEL;
+        //单声道选用左声道播放
+        i2s_caps.udata.config.channels = i2s_mono_left;
     } else {
-        i2s_caps.udata.config.channels   = info->fmt_chunk.channels;
+        i2s_caps.udata.config.channels   = i2s_stereo;
     }
     if ((info->fmt_chunk.sample_rate % 44100) == 0) {
         /* clock_aud1 has been configured for 44100*n sample rate*/
@@ -285,7 +285,7 @@ static int codec_playwav(int argc, char *argv[])
     wm8960_control.i2c_bus = i2c_bus;
     wm8960_control.slave_address = WM8960_I2C_ADDR;
     if (wm8960_init(&wm8960_control, &wm8960_config) != status_success) {
-        printf("Init Audio Codec failed\n");
+        rt_kprintf("Init Audio Codec failed\n");
     }
 
     while (1)
@@ -320,7 +320,7 @@ int main(void)
     rt_thread_mdelay(2000);
 
     //挂载文件系统
-    if (dfs_mount("sd0", "/", "elm", 0, NULL) == 0)
+    if (dfs_mount("sd", "/", "elm", 0, NULL) == 0)
     {
         rt_kprintf("sd0 mounted to /\n");
     }

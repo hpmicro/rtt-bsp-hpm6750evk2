@@ -253,6 +253,11 @@ menu "On-chip Peripheral Drivers"
         bool "Enable LVGL"
         default n
         select PKG_USING_LVGL if BSP_USING_LVGL
+        select BSP_USING_PDMA if BSP_USING_LVGL
+
+    menuconfig BSP_USING_PDMA
+        bool "Enable PDMA Driver"
+        default n
 
     menuconfig BSP_USING_GPTMR
 	   	bool "Enable GPTMR"
@@ -379,6 +384,34 @@ menu "On-chip Peripheral Drivers"
      			bool "Enable CAN3"
      			default n
      endif
+     menuconfig BSP_USING_ADC
+     	bool "Enable ADC"
+     	default n
+     	select RT_USING_ADC if BSP_USING_ADC
+     	if BSP_USING_ADC
+     		menuconfig BSP_USING_ADC12
+     		bool "Enable ADC12"
+     		default n
+     			if BSP_USING_ADC12
+		     		config BSP_USING_ADC0
+		     			bool "Enable ADC0"
+		     			default n
+		     		config BSP_USING_ADC1
+		     			bool "Enable ADC1"
+		     			default n
+		     		config BSP_USING_ADC2
+		     			bool "Enable ADC2"
+		     			default n
+		     	endif
+            menuconfig BSP_USING_ADC16
+            bool "Enable ADC16"
+            default n
+                if BSP_USING_ADC16
+                    config BSP_USING_ADC3
+                        bool "Enable ADC3"
+                        default n
+                endif
+         endif
 endmenu
 
 
