@@ -15,8 +15,10 @@
 #include "pinmux.h"
 #include "hpm_lcdc_drv.h"
 
-#define BOARD_NAME "hpm6750evk"
+#define BOARD_NAME "hpm6750evk2"
 #define BOARD_UF2_SIGNATURE (0x0A4D5048UL)
+
+#define BOARD_USE_AUDIO_CODEC_WM8960 (1)
 
 /* uart section */
 #ifndef BOARD_RUNNING_CORE
@@ -539,7 +541,7 @@ uint32_t board_init_spi_clock(SPI_Type *ptr);
 
 uint32_t board_init_adc12_clock(ADC12_Type *ptr);
 
-uint32_t board_init_adc16_clock(ADC16_Type *ptr);
+uint32_t board_init_adc16_clock(ADC16_Type *ptr, bool clk_src_ahb);
 
 uint32_t board_init_can_clock(CAN_Type *ptr);
 uint32_t board_init_gptmr_clock(GPTMR_Type *ptr);

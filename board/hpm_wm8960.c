@@ -10,6 +10,10 @@
 #include <stdio.h>
 #include "hpm_wm8960.h"
 
+#ifndef HPM_WM8960_MCLK_TOLERANCE
+#define HPM_WM8960_MCLK_TOLERANCE (4U)
+#endif
+
 /* wm8960 register default value */
 static const uint16_t wm8960_default_reg_val[WM8960_REG_NUM] = {
     0x0097, 0x0097, 0x0000, 0x0000, 0x0000, 0x0008, 0x0000, 0x000a, 0x01c0, 0x0000, 0x00ff, 0x00ff, 0x0000, 0x0000,
@@ -398,28 +402,38 @@ hpm_stat_t wm8960_set_volume(wm8960_control_t *control, wm8960_module_t module, 
     return stat;
 }
 
+static bool wm8960_check_clock_tolerance(uint32_t source, uint32_t target)
+{
+    if (abs(source - target) * 100 / target < HPM_WM8960_MCLK_TOLERANCE) {
+        return true;
+    }
+    return false;
+}
+
 hpm_stat_t wm8960_set_data_format(wm8960_control_t *control, uint32_t sysclk, uint32_t sample_rate, uint32_t bits)
 {
     hpm_stat_t stat = status_success;
-    uint32_t divider = 0;
-    uint16_t val     = 0;
+    uint16_t val = 0;
+    uint32_t ratio[7] = {256, 256 * 1.5, 256 * 2, 256 * 3, 256 * 4, 256 * 5.5, 256 * 6};
+    bool clock_meet_requirement = false;
 
-    /* Compute sample rate divider and SYSCLK Pre-divider, dac and adc are the same sample rate */
-    divider = sysclk / sample_rate;
-
-    if (divider >= 512) {
-        divider = divider / 2; /* SYSCLK Pre-divider */
-        val |= WM8960_CLOCK1_SYSCLKDIV_SET(2U);
+    if (sysclk / sample_rate > 256 * 6) {
+        sysclk = sysclk / 2;
+        val = WM8960_CLOCK1_SYSCLKDIV_SET(2U); /* SYSCLK Pre-divider */
     }
 
-    if (divider < 256U) {
+    for (uint8_t i = 0; i < 7; i++) {
+        if (wm8960_check_clock_tolerance(sysclk, sample_rate * ratio[i])) {
+            val |= ((i << WM8960_CLOCK1_ADCDIV_SHIFT) | (i << WM8960_CLOCK1_DACDIV_SHIFT));
+            clock_meet_requirement = true;
+            break;
+        }
+    }
+
+    if (!clock_meet_requirement) {
         return status_invalid_argument;
-    } else if (divider == 256U) {
-        HPM_CHECK_RET(wm8960_modify_reg(control, WM8960_CLOCK1, 0x1FEU, val));
-    } else {
-        val |= (((divider / 256U) << WM8960_CLOCK1_ADCDIV_SHIFT) | ((divider / 256U) << WM8960_CLOCK1_DACDIV_SHIFT));
-        HPM_CHECK_RET(wm8960_modify_reg(control, WM8960_CLOCK1, 0x1FEU, val));
     }
+    HPM_CHECK_RET(wm8960_modify_reg(control, WM8960_CLOCK1, 0x1FEU, val));
 
     /* set sample bit */
     switch (bits) {
