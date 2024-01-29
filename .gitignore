@@ -1,6 +1,6 @@
 # Prerequisites
 *.d
-
+.sconsign.dblite
 # Object files
 *.o
 *.ko
@@ -57,5 +57,9 @@ dkms.conf
 # Scons cache
 *.dbsqlite
 
+# Vim cache
+*.swp
+
 #dir
 .vscode
+.idea

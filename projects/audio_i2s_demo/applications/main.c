@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 hpmicro
+ * Copyright (c) 2022 HPMicro
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -14,18 +14,28 @@
 #include "hpm_i2s_drv.h"
 #include "drv_i2s.h"
 #include "wav_header.h"
-#include "hpm_wm8960.h"
 #include "hpm_clock_drv.h"
 #include <dfs_fs.h>
 #include <dfs_posix.h>
 
+#ifdef BSP_USING_AUDIO_CODEC_WM8960
+    #include "hpm_wm8960.h"
+#elif defined(BSP_USING_AUDIO_CODEC_SGTL5000)
+    #include "hpm_sgtl5000.h"
+#else
+    #error no specified Audio Codec!!!
+#endif
+
 #define BUFF_SIZE 2048
 uint8_t data_buff[BUFF_SIZE];
 
-#define CODEC_I2S_DEV_NAME        "i2s0"
-#define CODEC_I2S_CLK_NAME        clock_i2s0
-#define CODEC_I2C_DEV_NAME        "i2c0"
-#define CODEC_I2S_DATA_LINE       I2S_DATA_LINE_2
+#define CODEC_I2S_DEV_NAME        BOARD_AUDIO_CODEC_I2S_NAME
+#define CODEC_I2S_INSTANCE        BOARD_APP_I2S_BASE
+#define CODEC_I2S_CLK_NAME        BOARD_APP_I2S_CLK_NAME
+#define CODEC_I2C_DEV_NAME        BOARD_AUDIO_CODEC_I2C_NAME
+#define CODEC_I2S_DATA_LINE       BOARD_APP_I2S_DATA_LINE
+
+/* record wav parameter */
 #define CODEC_I2S_CHANNEL         i2s_stereo
 #define CODEC_I2S_SAMPLERATE      16000
 #define CODEC_I2S_SAMPLEBITS      16
@@ -60,9 +70,6 @@ static int codec_recordwav(int argc, char *argv[])
     struct rt_audio_caps i2s_caps = {0};
     struct rt_i2c_bus_device *i2c_bus;
 
-    wm8960_config_t wm8960_config;
-    wm8960_control_t wm8960_control;
-
     if (argc != 2)
     {
         rt_kprintf("Usage:\n");
@@ -79,46 +86,48 @@ static int codec_recordwav(int argc, char *argv[])
 
     write(fd, &header, sizeof(wav_header_t));
 
-    //获取 i2c_bus device, 控制codec
+    //get i2c_bus to configure codec
     i2c_bus = rt_i2c_bus_device_find(CODEC_I2C_DEV_NAME);
     if (!i2c_bus)
     {
         rt_kprintf("find %s failed!\n", CODEC_I2C_DEV_NAME);
-        return -RT_ERROR;
+        goto __exit;
     }
 
-    //获取i2s device, 用于codec传输音频数据
+    //get i2s device
     i2s_dev = rt_device_find(CODEC_I2S_DEV_NAME);
     if (!i2s_dev)
     {
         rt_kprintf("find %s failed!\n", CODEC_I2S_DEV_NAME);
+        goto __exit;
     }
 
     if (RT_EOK != rt_device_open(i2s_dev, RT_DEVICE_OFLAG_RDONLY))
     {
         rt_kprintf("open %s failed!\n", CODEC_I2S_DEV_NAME);
+        goto __exit;
     }
 
-    //配置CODEC使用的DATA_LINE
+    /* adjust I2S MCLK according to sample rate */
+    board_config_i2s_clock(CODEC_I2S_INSTANCE, CODEC_I2S_SAMPLERATE);
+
+    // configure samplerate, samplebits, channels
+    i2s_caps.main_type               = AUDIO_TYPE_INPUT;
+    i2s_caps.sub_type                = AUDIO_DSP_PARAM;
+    i2s_caps.udata.config.samplerate = CODEC_I2S_SAMPLERATE;
+    i2s_caps.udata.config.samplebits = CODEC_I2S_SAMPLEBITS;
+    i2s_caps.udata.config.channels   = CODEC_I2S_CHANNEL;
+    rt_device_control(i2s_dev, AUDIO_CTL_CONFIGURE, &i2s_caps);
+
+    // configure I2S channel
     i2s_caps.main_type               = AUDIO_TYPE_INPUT;
     i2s_caps.sub_type                = AUDIO_PARM_I2S_DATA_LINE;
     i2s_caps.udata.value             = CODEC_I2S_DATA_LINE;
     rt_device_control(i2s_dev, AUDIO_CTL_CONFIGURE, &i2s_caps);
 
-    //配置I2S samplerate, samplebits, channels
-    i2s_caps.main_type               = AUDIO_TYPE_INPUT;
-    i2s_caps.sub_type                = AUDIO_DSP_PARAM;
-    i2s_caps.udata.config.samplerate = CODEC_I2S_SAMPLERATE;
-    if ((i2s_caps.udata.config.samplerate % 44100) == 0) {
-        /* clock_aud1 has been configured for 44100*n sample rate*/
-        clock_set_i2s_source(CODEC_I2S_CLK_NAME, clk_i2s_src_aud1);
-    } else {
-        clock_set_i2s_source(CODEC_I2S_CLK_NAME, clk_i2s_src_aud0);
-    }
-    i2s_caps.udata.config.samplebits = CODEC_I2S_SAMPLEBITS;
-    i2s_caps.udata.config.channels   = CODEC_I2S_CHANNEL;
-    rt_device_control(i2s_dev, AUDIO_CTL_CONFIGURE, &i2s_caps);
-
+#ifdef BSP_USING_AUDIO_CODEC_WM8960
+    wm8960_config_t wm8960_config;
+    wm8960_control_t wm8960_control;
     wm8960_config.route = wm8960_route_record;
     wm8960_config.left_input = wm8960_input_closed;
     wm8960_config.right_input = wm8960_input_differential_mic_input2;
@@ -131,17 +140,33 @@ static int codec_recordwav(int argc, char *argv[])
     wm8960_control.i2c_bus = i2c_bus;
     wm8960_control.slave_address = WM8960_I2C_ADDR;
     if (wm8960_init(&wm8960_control, &wm8960_config) != status_success) {
-        printf("Init Audio Codec failed\n");
+        rt_kprintf("Init Audio Codec failed\n");
+        goto __exit;
     }
-    
+#elif defined(BSP_USING_AUDIO_CODEC_SGTL5000)
+    sgtl_config_t sgtl5000_config;
+    sgtl_context_t sgtl5000_context;
+    sgtl5000_config.route = sgtl_route_record;
+    sgtl5000_config.bus = sgtl_bus_left_justified;
+    sgtl5000_config.master = false;
+    sgtl5000_config.format.mclk_hz = clock_get_frequency(CODEC_I2S_CLK_NAME);
+    sgtl5000_config.format.sample_rate = CODEC_I2S_SAMPLERATE;
+    sgtl5000_config.format.bit_width = CODEC_I2S_SAMPLEBITS;
+    sgtl5000_config.format.sclk_edge = sgtl_sclk_valid_edge_rising;
+
+    sgtl5000_context.i2c_bus = i2c_bus;
+    sgtl5000_context.slave_address = SGTL5000_I2C_ADDR;
+    if (sgtl_init(&sgtl5000_context, &sgtl5000_config) != status_success) {
+        rt_kprintf("Init Audio Codec failed\n");
+        goto __exit;
+    }
+#endif
 
     if (CODEC_I2S_CHANNEL != i2s_stereo) {
         channel_num = 1;
     } else {
         channel_num = 2;
     }
-
-    //输出wave文件属性
     rt_kprintf("record %ds audio data to wav file:\n", RECORD_TIME_MS/1000);
     rt_kprintf("samplerate: %d\n", CODEC_I2S_SAMPLERATE);
     rt_kprintf("samplebits: %d\n", CODEC_I2S_SAMPLEBITS);
@@ -153,7 +178,7 @@ static int codec_recordwav(int argc, char *argv[])
     {
         int length;
 
-        /* 从audio设置读取音频数据  */
+        /* get audio data  */
         length = rt_device_read(i2s_dev, 0, data_buff, BUFF_SIZE);
 
         if (length)
@@ -166,13 +191,12 @@ static int codec_recordwav(int argc, char *argv[])
             break;
     }
 
-    /* 重新写入 wav 文件的头 */
+    /* write wave header  */
     wavheader_init(&header, CODEC_I2S_SAMPLERATE, channel_num, CODEC_I2S_SAMPLEBITS, data_size);
     lseek(fd, 0, SEEK_SET);
     write(fd, &header, sizeof(wav_header_t));
     close(fd);
 
-    //关闭设备
     rt_device_close(i2s_dev);
 
     __exit:
@@ -193,9 +217,6 @@ static int codec_playwav(int argc, char *argv[])
     rt_device_t i2s_dev;
     struct rt_audio_caps i2s_caps = {0};
     struct rt_i2c_bus_device *i2c_bus;
-
-    wm8960_config_t wm8960_config;
-    wm8960_control_t wm8960_control;
 
     if (argc != 2)
     {
@@ -221,7 +242,6 @@ static int codec_playwav(int argc, char *argv[])
     if (read(fd, &(info->data_chunk), sizeof(data_chunk_t)) <= 0)
         goto __exit;
 
-    //输出wave文件属性
     time = info->data_chunk.datasize / (info->fmt_chunk.sample_rate * (info->fmt_chunk.bit_per_sample / 8U) * info->fmt_chunk.channels);
     rt_kprintf("wav information:\n");
     rt_kprintf("time: %ds\n", time);
@@ -229,50 +249,50 @@ static int codec_playwav(int argc, char *argv[])
     rt_kprintf("samplebits: %d\n", info->fmt_chunk.bit_per_sample);
     rt_kprintf("channel: %d\n", info->fmt_chunk.channels);
 
-    //获取 i2c_bus device, 控制codec
+    //get i2c_bus to configure audio codec
     i2c_bus = rt_i2c_bus_device_find(CODEC_I2C_DEV_NAME);
     if (!i2c_bus)
     {
         rt_kprintf("find %s failed!\n", CODEC_I2C_DEV_NAME);
-        return -RT_ERROR;
+        goto __exit;
     }
 
-    //获取i2s device, 传输音频数据
+    //get i2s device
     i2s_dev = rt_device_find(CODEC_I2S_DEV_NAME);
     if (!i2s_dev)
     {
         rt_kprintf("find %s failed!\n", CODEC_I2S_DEV_NAME);
+        goto __exit;
     }
 
     if (RT_EOK != rt_device_open(i2s_dev, RT_DEVICE_OFLAG_WRONLY))
     {
         rt_kprintf("open %s failed!\n", CODEC_I2S_DEV_NAME);
+        goto __exit;
     }
 
-    //配置CODEC使用的I2S
-    i2s_caps.main_type               = AUDIO_TYPE_OUTPUT;
-    i2s_caps.sub_type                = AUDIO_PARM_I2S_DATA_LINE;
-    i2s_caps.udata.value             = CODEC_I2S_DATA_LINE;
-    rt_device_control(i2s_dev, AUDIO_CTL_CONFIGURE, &i2s_caps);
+    /* adjust I2S MCLK according to sample rate */
+    board_config_i2s_clock(CODEC_I2S_INSTANCE, info->fmt_chunk.sample_rate);
 
     i2s_caps.main_type               = AUDIO_TYPE_OUTPUT;
     i2s_caps.sub_type                = AUDIO_DSP_PARAM;
     i2s_caps.udata.config.samplerate = info->fmt_chunk.sample_rate;
     i2s_caps.udata.config.samplebits = info->fmt_chunk.bit_per_sample;
     if (info->fmt_chunk.channels == 1) {
-        //单声道选用左声道播放
         i2s_caps.udata.config.channels = i2s_mono_left;
     } else {
         i2s_caps.udata.config.channels   = i2s_stereo;
     }
-    if ((info->fmt_chunk.sample_rate % 44100) == 0) {
-        /* clock_aud1 has been configured for 44100*n sample rate*/
-        clock_set_i2s_source(CODEC_I2S_CLK_NAME, clk_i2s_src_aud1);
-    } else {
-        clock_set_i2s_source(CODEC_I2S_CLK_NAME, clk_i2s_src_aud0);
-    }
     rt_device_control(i2s_dev, AUDIO_CTL_CONFIGURE, &i2s_caps);
 
+    i2s_caps.main_type               = AUDIO_TYPE_OUTPUT;
+    i2s_caps.sub_type                = AUDIO_PARM_I2S_DATA_LINE;
+    i2s_caps.udata.value             = CODEC_I2S_DATA_LINE;
+    rt_device_control(i2s_dev, AUDIO_CTL_CONFIGURE, &i2s_caps);
+
+#ifdef BSP_USING_AUDIO_CODEC_WM8960
+    wm8960_config_t wm8960_config;
+    wm8960_control_t wm8960_control;
     wm8960_config.route = wm8960_route_playback;
     wm8960_config.left_input = wm8960_input_closed;
     wm8960_config.right_input = wm8960_input_differential_mic_input2;
@@ -286,7 +306,26 @@ static int codec_playwav(int argc, char *argv[])
     wm8960_control.slave_address = WM8960_I2C_ADDR;
     if (wm8960_init(&wm8960_control, &wm8960_config) != status_success) {
         rt_kprintf("Init Audio Codec failed\n");
+        goto __exit;
     }
+#elif defined(BSP_USING_AUDIO_CODEC_SGTL5000)
+    sgtl_config_t sgtl5000_config;
+    sgtl_context_t sgtl5000_context;
+    sgtl5000_config.route = sgtl_route_playback;
+    sgtl5000_config.bus = sgtl_bus_left_justified;
+    sgtl5000_config.master = false;
+    sgtl5000_config.format.mclk_hz = clock_get_frequency(CODEC_I2S_CLK_NAME);
+    sgtl5000_config.format.sample_rate = info->fmt_chunk.sample_rate;
+    sgtl5000_config.format.bit_width = info->fmt_chunk.bit_per_sample;
+    sgtl5000_config.format.sclk_edge = sgtl_sclk_valid_edge_rising;
+
+    sgtl5000_context.i2c_bus = i2c_bus;
+    sgtl5000_context.slave_address = SGTL5000_I2C_ADDR;
+    if (sgtl_init(&sgtl5000_context, &sgtl5000_config) != status_success) {
+        rt_kprintf("Init Audio Codec failed\n");
+        goto __exit;
+    }
+#endif
 
     while (1)
     {
@@ -319,14 +358,13 @@ int main(void)
 {
     rt_thread_mdelay(2000);
 
-    //挂载文件系统
-    if (dfs_mount("sd", "/", "elm", 0, NULL) == 0)
+    if (dfs_mount(BOARD_SD_NAME, "/", "elm", 0, NULL) == 0)
     {
-        rt_kprintf("sd0 mounted to /\n");
+        rt_kprintf("%s mounted to /\n", BOARD_SD_NAME);
     }
     else
     {
-        rt_kprintf("sd0 mount to / failed\n");
+        rt_kprintf("%s mount to / failed\n", BOARD_SD_NAME);
     }
     return 0;
 }

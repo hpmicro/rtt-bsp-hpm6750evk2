@@ -1,0 +1,12 @@
+[
+ {
+  "path": "/packages/iot/webnet", 
+  "ver": "latest", 
+  "name": "WEBNET"
+ }, 
+ {
+  "path": "/packages/iot/netutils", 
+  "ver": "latest", 
+  "name": "NETUTILS"
+ }
+]

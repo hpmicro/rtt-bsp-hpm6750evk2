@@ -48,7 +48,7 @@
 #define RT_CONSOLEBUF_SIZE 128
 #define RT_CONSOLE_DEVICE_NAME "uart0"
 /* end of Kernel Device Object */
-#define RT_VER_NUM 0x50001
+#define RT_VER_NUM 0x50002
 /* end of RT-Thread Kernel */
 
 /* RT-Thread Components */
@@ -104,7 +104,12 @@
 
 /* C/C++ and POSIX layer */
 
-#define RT_LIBC_DEFAULT_TIMEZONE 8
+/* ISO-ANSI C layer */
+
+/* Timezone and Daylight Saving Time */
+
+/* end of Timezone and Daylight Saving Time */
+/* end of ISO-ANSI C layer */
 
 /* POSIX (Portable Operating System Interface) layer */
 
@@ -148,8 +153,8 @@
 
 /* Static IPv4 Address */
 
-#define RT_LWIP_IPADDR "10.10.10.10"
-#define RT_LWIP_GWADDR "10.10.10.1"
+#define RT_LWIP_IPADDR "192.168.100.10"
+#define RT_LWIP_GWADDR "192.168.100.1"
 #define RT_LWIP_MSKADDR "255.255.255.0"
 /* end of Static IPv4 Address */
 #define RT_LWIP_UDP
@@ -214,6 +219,18 @@
 /* Wiced WiFi */
 
 /* end of Wiced WiFi */
+
+/* CYW43012 WiFi */
+
+/* end of CYW43012 WiFi */
+
+/* BL808 WiFi */
+
+/* end of BL808 WiFi */
+
+/* CYW43439 WiFi */
+
+/* end of CYW43439 WiFi */
 /* end of Wi-Fi */
 #define PKG_USING_NETUTILS
 #define PKG_NETUTILS_IPERF
@@ -253,10 +270,6 @@
 /* u8g2: a monochrome graphic library */
 
 /* end of u8g2: a monochrome graphic library */
-
-/* PainterEngine: A cross-platform graphics application framework written in C language */
-
-/* end of PainterEngine: A cross-platform graphics application framework written in C language */
 /* end of multimedia packages */
 
 /* tools packages */
@@ -284,6 +297,13 @@
 
 /* peripheral libraries and drivers */
 
+/* sensors drivers */
+
+/* end of sensors drivers */
+
+/* touch drivers */
+
+/* end of touch drivers */
 
 /* Kendryte SDK */
 
@@ -293,6 +313,10 @@
 /* AI packages */
 
 /* end of AI packages */
+
+/* Signal Processing and Control Algorithm Packages */
+
+/* end of Signal Processing and Control Algorithm Packages */
 
 /* miscellaneous packages */
 
@@ -312,9 +336,9 @@
 /* Arduino libraries */
 
 
-/* Projects */
+/* Projects and Demos */
 
-/* end of Projects */
+/* end of Projects and Demos */
 
 /* Sensors */
 
@@ -336,11 +360,15 @@
 
 /* Communication */
 
+/* end of Communication */
+
 /* Device Control */
 
 /* end of Device Control */
 
 /* Other */
+
+/* end of Other */
 
 /* Signal IO */
 
@@ -354,19 +382,17 @@
 /* Hardware Drivers Config */
 
 #define SOC_HPM6000
-#define BSP_USING_ENET_PHY_RTL8201
+#define BSP_USING_ENET_PHY_RTL8211
 
 /* On-chip Peripheral Drivers */
 
 #define BSP_USING_GPIO
 #define BSP_USING_UART
 #define BSP_USING_UART0
-#define BSP_UART0_RX_DMA_CHANNEL 0
-#define BSP_UART0_TX_DMA_CHANNEL 1
 #define BSP_UART0_RX_BUFSIZE 128
 #define BSP_UART0_TX_BUFSIZE 0
 #define BSP_USING_ETH
-#define BSP_USING_ETH1
+#define BSP_USING_ETH0
 #define BSP_USING_GPTMR
 #define BSP_USING_FEMC
 #define INIT_EXT_RAM_FOR_DATA

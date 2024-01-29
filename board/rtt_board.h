@@ -39,6 +39,18 @@
 /* CAN section */
 #define BOARD_CAN_NAME                        "can0"
 
+/* UART section */
+#define BOARD_UART_NAME                        "uart13"
+#define BOARD_UART_RX_BUFFER_SIZE              BSP_UART13_RX_BUFSIZE
+
+/* eeprom section */
+#define BOARD_EEPROM_I2C_NAME                  "i2c0"
+
+#define BOARD_SD_NAME                          "sd1"
+/* audio section */
+#define BOARD_AUDIO_CODEC_I2C_NAME             "i2c0"
+#define BOARD_AUDIO_CODEC_I2S_NAME             "i2s0"
+
 /***************************************************************
  *
  * RT-Thread related definitions
