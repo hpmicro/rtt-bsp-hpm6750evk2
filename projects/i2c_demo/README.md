@@ -6,7 +6,7 @@
 
 ```console
 RT-Thread shell commands:
-eeprom_i2c       - "eeprom_i2c 0x50/0x51"
+eeprom_i2c       - "eeprom_i2c 0x50"
 reset            - reset the board
 clear            - clear the terminal screen
 version          - show RT-Thread version information

@@ -71,7 +71,7 @@ static int eeprom_i2c(int argc, char *argv[])
     {
         rt_strncpy(i2c_name, argv[2], RT_NAME_MAX);
     } else {
-        rt_kprintf("Please use correct cmd format: eeprom_i2c 0x51/0x50\n");
+        rt_kprintf("Please use correct cmd format: eeprom_i2c 0x50\n");
         return -1;
     }
 
@@ -119,7 +119,7 @@ static int eeprom_i2c(int argc, char *argv[])
     }
     rt_kprintf("\n");
 }
-MSH_CMD_EXPORT(eeprom_i2c, "eeprom_i2c 0x50/0x51");
+MSH_CMD_EXPORT(eeprom_i2c, "eeprom_i2c 0x50");
 
 int main(void)
 {
