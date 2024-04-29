@@ -76,17 +76,7 @@ if PLATFORM == 'gcc':
 
     CPATH = ''
     LPATH = ''
-    if BUILD == 'ram_debug':
-        CFLAGS += ' -gdwarf-2'
-        AFLAGS += ' -gdwarf-2'
-        CFLAGS += ' -Og'
-        LFLAGS += ' -Og'
-        LINKER_FILE = 'board/linker_scripts/ram_rtt.ld'
-    elif BUILD == 'ram_release':
-        CFLAGS += ' -O2 -Os'
-        LFLAGS += ' -O2 -Os'
-        LINKER_FILE = 'board/linker_scripts/ram_rtt.ld'
-    elif BUILD == 'flash_debug':
+    if BUILD == 'flash_debug':
         CFLAGS += ' -gdwarf-2'
         AFLAGS += ' -gdwarf-2'
         CFLAGS += ' -Og'

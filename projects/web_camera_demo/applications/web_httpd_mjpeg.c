@@ -21,7 +21,7 @@
 #include "cam_jpeg_encode.h"
 #include "web_icon.h"
 
-#define   NETIF_NAME         "ET"
+#define   NETIF_NAME         "E0"
 
 #if defined(CONFIG_CAMERA_OV5640) && (CONFIG_CAMERA_OV5640 == 1)
 #define   WEB_CAMERA_NAE     "ov5640"

@@ -70,7 +70,7 @@ if PLATFORM == 'gcc':
     STRIP = PREFIX + 'strip'
 
     ARCH_ABI = ' -mcmodel=medlow '
-    CFLAGS = ARCH_ABI  + ' -DUSE_NONVECTOR_MODE=1  -DCFG_TUSB_REPORT_ID_COUNT=2 ' + ' -ffunction-sections -fdata-sections -fno-common '
+    CFLAGS = ARCH_ABI  + ' -DUSE_NONVECTOR_MODE=1  ' + ' -ffunction-sections -fdata-sections -fno-common '
     AFLAGS = CFLAGS
     LFLAGS  = ARCH_ABI + '  --specs=nano.specs --specs=nosys.specs  -u _printf_float -u _scanf_float -nostartfiles -Wl,--gc-sections '
 

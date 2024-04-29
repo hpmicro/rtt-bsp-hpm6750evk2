@@ -20,4 +20,3 @@ HPM6750EVK2 开发板的 RT-Thread Studio 板级支持包
 - usb_device_generic_hid
 - usb_host_msc_udisk
 - web_camera_demo
-- webnet_demo

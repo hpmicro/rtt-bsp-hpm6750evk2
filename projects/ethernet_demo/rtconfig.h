@@ -300,6 +300,17 @@
 
 /* peripheral libraries and drivers */
 
+/* HAL & SDK Drivers */
+
+/* STM32 HAL & SDK Drivers */
+
+/* end of STM32 HAL & SDK Drivers */
+
+/* Kendryte SDK */
+
+/* end of Kendryte SDK */
+/* end of HAL & SDK Drivers */
+
 /* sensors drivers */
 
 /* end of sensors drivers */
@@ -307,10 +318,6 @@
 /* touch drivers */
 
 /* end of touch drivers */
-
-/* Kendryte SDK */
-
-/* end of Kendryte SDK */
 /* end of peripheral libraries and drivers */
 
 /* AI packages */
@@ -386,6 +393,7 @@
 
 #define SOC_HPM6000
 #define BSP_USING_ENET_PHY_RTL8211
+#define BSP_USING_ENET_PHY_RTL8201
 
 /* On-chip Peripheral Drivers */
 
@@ -396,10 +404,19 @@
 #define BSP_UART0_TX_BUFSIZE 0
 #define BSP_USING_ETH
 #define BSP_USING_ETH0
+#define BSP_USING_ETH1
 #define BSP_USING_GPTMR
 #define BSP_USING_FEMC
 #define INIT_EXT_RAM_FOR_DATA
 /* end of On-chip Peripheral Drivers */
+
+/* Segger SystemView Config */
+
+/* end of Segger SystemView Config */
+
+/* Hpmicro Interrupt Config */
+
+/* end of Hpmicro Interrupt Config */
 /* end of Hardware Drivers Config */
 
 #endif
