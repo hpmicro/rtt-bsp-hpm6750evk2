@@ -249,6 +249,21 @@
 
 /* peripheral libraries and drivers */
 
+/* HAL & SDK Drivers */
+
+/* STM32 HAL & SDK Drivers */
+
+/* end of STM32 HAL & SDK Drivers */
+
+/* Infineon HAL Packages */
+
+/* end of Infineon HAL Packages */
+
+/* Kendryte SDK */
+
+/* end of Kendryte SDK */
+/* end of HAL & SDK Drivers */
+
 /* sensors drivers */
 
 /* end of sensors drivers */
@@ -256,10 +271,6 @@
 /* touch drivers */
 
 /* end of touch drivers */
-
-/* Kendryte SDK */
-
-/* end of Kendryte SDK */
 /* end of peripheral libraries and drivers */
 
 /* AI packages */
@@ -345,6 +356,10 @@
 #define BSP_USING_RTC
 #define BSP_USING_SDXC
 #define BSP_USING_SDXC1
+#define BSP_SDXC1_BUS_WIDTH_4BIT
+#define BSP_SDXC1_VOLTAGE_3V3
+#define BSP_SDXC1_VSEL_PIN "None"
+#define BSP_SDXC1_PWR_PIN "PC20"
 #define BSP_USING_I2C
 #define BSP_USING_I2C0
 #define BSP_USING_FEMC
@@ -353,6 +368,14 @@
 #define BSP_USING_I2S0
 #define BSP_USING_AUDIO_CODEC_WM8960
 /* end of On-chip Peripheral Drivers */
+
+/* Segger SystemView Config */
+
+/* end of Segger SystemView Config */
+
+/* Hpmicro Interrupt Config */
+
+/* end of Hpmicro Interrupt Config */
 /* end of Hardware Drivers Config */
 
 #endif

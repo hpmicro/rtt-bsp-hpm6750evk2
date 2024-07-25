@@ -198,6 +198,9 @@
 /* STM32 HAL & SDK Drivers */
 
 
+/* Infineon HAL Packages */
+
+
 /* Kendryte SDK */
 
 
@@ -270,9 +273,10 @@
 #define BSP_UART0_TX_BUFSIZE 0
 #define BSP_USING_SPI
 #define BSP_USING_SPI1
+#define BSP_SPI1_USING_SOFT_CS
 #define BSP_USING_RTC
 #define BSP_USING_TOUCH
-#define BSP_USING_TOUCH_GT911
+#define BSP_USING_TOUCH_GT9xx
 #define BSP_USING_LCD
 #define BSP_USING_LVGL
 #define BSP_USING_PDMA
@@ -285,6 +289,9 @@
 #define BSP_USEING_PANEL_RGB_TM070RDH13
 
 /* Segger SystemView Config */
+
+
+/* Hpmicro Interrupt Config */
 
 
 #endif
