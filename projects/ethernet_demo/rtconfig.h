@@ -237,6 +237,7 @@
 /* end of Wi-Fi */
 #define PKG_USING_NETUTILS
 #define PKG_NETUTILS_IPERF
+#define IPERF_THREAD_STACK_SIZE 2048
 #define PKG_NETUTILS_NTP
 #define NETUTILS_NTP_HOSTNAME "cn.ntp.org.cn"
 #define NETUTILS_NTP_HOSTNAME2 "ntp.rt-thread.org"
@@ -306,9 +307,21 @@
 
 /* end of STM32 HAL & SDK Drivers */
 
+/* Infineon HAL Packages */
+
+/* end of Infineon HAL Packages */
+
 /* Kendryte SDK */
 
 /* end of Kendryte SDK */
+
+/* WCH HAL & SDK Drivers */
+
+/* end of WCH HAL & SDK Drivers */
+
+/* AT32 HAL & SDK Drivers */
+
+/* end of AT32 HAL & SDK Drivers */
 /* end of HAL & SDK Drivers */
 
 /* sensors drivers */
@@ -398,10 +411,12 @@
 /* On-chip Peripheral Drivers */
 
 #define BSP_USING_GPIO
+#define BSP_GPIO_IRQ_PRIORITY 1
 #define BSP_USING_UART
 #define BSP_USING_UART0
 #define BSP_UART0_RX_BUFSIZE 128
 #define BSP_UART0_TX_BUFSIZE 0
+#define BSP_UART0_IRQ_PRIORITY 1
 #define BSP_USING_ETH
 #define BSP_USING_ETH0
 #define BSP_USING_ETH1

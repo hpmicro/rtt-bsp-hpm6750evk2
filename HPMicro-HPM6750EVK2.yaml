@@ -30,10 +30,10 @@ chip:
 
 docs:
 - category: manual
-  file: documents/manuals/HPM6750EVK2_UG_V1.0.pdf
+  file: documents/manuals/HPM6750EVK2_UG_V1_0.pdf
   title: HPM6750EVK2 Quick Start Guide
 - category: sheet
-  file: documents/sheet/HPM6700_6400_DS_V2_1.pdf
+  file: documents/sheet/HPM6700_6400_DS_V2_5.pdf
   title: HPM6750 Datasheet
 features:
 - 'MCU: HPM6750, main frequency 816MHz, 2MBytes SRAM'
@@ -52,7 +52,7 @@ features_zh:
 
 pkg_type: Board_Support_Packages
 pkg_vendor: HPMicro
-pkg_version: 1.6.0
+pkg_version: 1.9.0
 
 template_projects:
 - project_name: blink_led
@@ -75,6 +75,7 @@ template_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -103,7 +104,7 @@ template_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -131,6 +132,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -159,7 +161,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -183,6 +185,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -211,7 +214,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -235,6 +238,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -263,7 +267,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -287,6 +291,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -315,7 +320,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -339,6 +344,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -367,7 +373,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -392,6 +398,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -420,7 +427,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -445,6 +452,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -473,7 +481,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -498,6 +506,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -526,7 +535,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -551,6 +560,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -579,7 +589,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -604,6 +614,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -632,7 +643,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -657,6 +668,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -685,7 +697,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -709,6 +721,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -737,7 +750,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -761,6 +774,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -789,7 +803,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -813,6 +827,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -841,7 +856,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -866,6 +881,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -894,7 +910,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -919,6 +935,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -947,7 +964,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []
@@ -972,6 +989,7 @@ example_projects:
     - rtconfig_preinc.h
     - SConscript
     - SConstruct
+    - tools
   - source_path_offset: 'common'
     target_path_offset: ''
     files_and_folders:
@@ -1000,7 +1018,7 @@ example_projects:
   - package_name: J-Link
     package_type: Debugger_Support_Packages
     package_vendor: SEGGER
-    package_version: 'v7.96q'
+    package_version: 'v8.24'
     source_path_offset: ''
     target_path_offset: ''
     files_and_folders: []

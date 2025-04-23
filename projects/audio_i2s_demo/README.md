@@ -60,7 +60,7 @@ date             - get date and time or set (local timezone) [year month day hou
 ## 运行现象
 使用`codec_recordwav /sample.wav`命令, 对mic发声，会录制一段音频以wav格式保存在SD卡
 ```console
-msh />codec_recordwav /test.wav
+msh />codec_recordwav /sample.wav
 record 10s audio data to wav file:
 samplerate: 16000
 samplebits: 16
@@ -68,7 +68,7 @@ channel number: 2
 ```
 使用`codec_playwav /sample.wav`命令, 播放sd卡中的wav, 通过耳机可听到声音
 ```console
-msh />codec_playwav /test.wav
+msh />codec_playwav /sample.wav
 wav information:
 time: 10s
 samplerate: 16000
