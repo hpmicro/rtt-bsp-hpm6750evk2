@@ -234,6 +234,7 @@
 /* end of Wi-Fi */
 #define PKG_USING_NETUTILS
 #define PKG_NETUTILS_IPERF
+#define IPERF_THREAD_STACK_SIZE 2048
 #define PKG_NETUTILS_NTP
 #define NETUTILS_NTP_HOSTNAME "cn.ntp.org.cn"
 #define NETUTILS_NTP_HOSTNAME2 "ntp.rt-thread.org"
@@ -297,6 +298,45 @@
 
 /* peripheral libraries and drivers */
 
+/* HAL & SDK Drivers */
+
+/* STM32 HAL & SDK Drivers */
+
+/* end of STM32 HAL & SDK Drivers */
+
+/* Infineon HAL Packages */
+
+/* end of Infineon HAL Packages */
+
+/* Kendryte SDK */
+
+/* end of Kendryte SDK */
+
+/* WCH HAL & SDK Drivers */
+
+/* end of WCH HAL & SDK Drivers */
+
+/* AT32 HAL & SDK Drivers */
+
+/* end of AT32 HAL & SDK Drivers */
+
+/* HC32 DDL Drivers */
+
+/* end of HC32 DDL Drivers */
+
+/* NXP HAL & SDK Drivers */
+
+/* end of NXP HAL & SDK Drivers */
+
+/* NUVOTON Drivers */
+
+/* end of NUVOTON Drivers */
+
+/* GD32 Drivers */
+
+/* end of GD32 Drivers */
+/* end of HAL & SDK Drivers */
+
 /* sensors drivers */
 
 /* end of sensors drivers */
@@ -304,10 +344,6 @@
 /* touch drivers */
 
 /* end of touch drivers */
-
-/* Kendryte SDK */
-
-/* end of Kendryte SDK */
 /* end of peripheral libraries and drivers */
 
 /* AI packages */
@@ -383,20 +419,31 @@
 
 #define SOC_HPM6000
 #define BSP_USING_ENET_PHY_RTL8211
+#define LWIP_SUPPORT_CUSTOM_PBUF 1
 
 /* On-chip Peripheral Drivers */
 
 #define BSP_USING_GPIO
+#define BSP_GPIO_IRQ_PRIORITY 1
 #define BSP_USING_UART
 #define BSP_USING_UART0
 #define BSP_UART0_RX_BUFSIZE 128
 #define BSP_UART0_TX_BUFSIZE 0
+#define BSP_UART0_IRQ_PRIORITY 1
 #define BSP_USING_ETH
 #define BSP_USING_ETH0
 #define BSP_USING_GPTMR
 #define BSP_USING_FEMC
 #define INIT_EXT_RAM_FOR_DATA
 /* end of On-chip Peripheral Drivers */
+
+/* Segger SystemView Config */
+
+/* end of Segger SystemView Config */
+
+/* HPMicro Interrupt Config */
+
+/* end of HPMicro Interrupt Config */
 /* end of Hardware Drivers Config */
 
 #endif

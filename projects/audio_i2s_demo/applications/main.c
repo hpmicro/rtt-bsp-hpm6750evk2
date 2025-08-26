@@ -42,6 +42,11 @@ uint8_t data_buff[BUFF_SIZE];
 #define CODEC_I2S_SAMPLEBITS      16
 #define RECORD_TIME_MS            10000
 
+extern int open(const char *path, int oflag, ... );
+extern int write(int fd, const void *buf, size_t len);
+extern int read(int fd, void *buf, size_t len);
+extern int close(int fd);
+
 static void wavheader_init(wav_header_t *header, uint32_t sample_rate, uint8_t channels, uint8_t sample_bits, uint32_t datasize)
 {
     memcpy(header->riff_chunk.id, "RIFF", 4);

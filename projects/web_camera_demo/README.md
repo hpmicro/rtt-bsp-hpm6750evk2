@@ -7,8 +7,10 @@
 本例程使用OV5640摄像头并内置简易网页服务器，PC浏览器通过访问网页服务器获取jpeg图像流进行显示
 
 ## 硬件设置
-* 使用USB Type-C线缆连接PC USB端口和PWR DEBUG端口
-* 使用以太网线缆将开发板RGMII或RMII端口接入路由器中，路由器需要开启DHCP功能。
+* 使用USB Type-C线缆连接PC USB端口和PWR DEBUG端口。
+* 例程使用的是`ETH0`网口，对应的 `network interface device` 为 `E0`
+* 使用的WEB的网络接口名称也是`E0`，相对应的宏定义在`web_httpd_mjpeg.c`文件中的 `NETIF_NAME`宏。
+* 对应的网口接入路由器中，路由器需要开启DHCP功能。
 * 所在的局域网需要能访问互联网。
 * OV5640摄像头插入到对应的24P fpc座子上
 
@@ -36,10 +38,11 @@ WebServer Waiting for client on port 80...
 ```
 
 - 完成后，查询当前节点的网络信息，记住本IP地址
+- **注意**：确保 log已经打印 `WebServer Waiting for client on port 80.` ，否则请检查网口是否连接正确以及网络配置信息是否正确。
 
 ```console
 msh />ifconfig
-network interface device: w0 (Default)
+network interface device: E0 (Default)
 MTU: 1500
 MAC: fc 58 4a 2c 48 17
 FLAGS: UP LINK_UP INTERNET_UP DHCP_ENABLE ETHARP BROADCAST IGMP
@@ -54,17 +57,15 @@ dns server #1: 192.168.0.1
 
 ```console
 msh />
-StreamConnected=4,192.168.0.107 , 58737
+New client connected: 192.168.1.100:56772
 
-uri=GET / HTTP/1.1
+Received URI: GET / HTTP/1.1
 
-bytes_received <= 0,lwip close...
+New client connected: 192.168.1.100:56771
 
-StreamConnected=4,192.168.0.107 , 58738
+Received URI: GET /?hpm6800evk=mjpeg HTTP/1.1
 
-uri=GET /?hpm6750evk2=mjpeg HTTP/1.1
-
- Now Ok!!
+MJPEG stream started
 
 ```
 

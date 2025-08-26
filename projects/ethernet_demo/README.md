@@ -9,6 +9,10 @@
 * 使用USB Type-C线缆连接PC USB端口和PWR DEBUG端口
 * 使用以太网线缆连接PC以太网端口和开发板RGMII或RMII端口
 
+## 软件设置
+
+* 使用flash_release编译运行，可以获得更好的网络性能
+
 ## 运行示例
 
 * 编译下载程序
@@ -192,7 +196,7 @@ ping: not found specified netif, using default netdev ET.
   - PC端输入命令
 
     ```console
-    C:\Users>iperf -u -c 192.168.100.6 -i 1 -b 1000M
+    C:\Users>iperf -u -c 192.168.100.6 -i 1 -b 1000M -t 20
     ```
 
   - 观察PC端结果
@@ -236,11 +240,9 @@ ping: not found specified netif, using default netdev ET.
     
     [120805] I/iperf: iperfd01: 632.0850 Mbps! lost:11873 total:280617
     
-    [125812] I/iperf: iperfd01: 623.3640 Mbps! lost:13284 total:278320
-    
     [131282] I/iperf: iperfd01: 132.7410 Mbps! lost:-2237084 total:-2175429
     ```
-
+    
     
 
 - UDP客户端模式

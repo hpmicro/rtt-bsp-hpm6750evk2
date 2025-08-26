@@ -19,11 +19,10 @@ int main(void)
 
     app_init_led_pins();
 
-    static uint32_t led_thread_arg = 0, web_cam_thread_arg = 0;
+    static uint32_t led_thread_arg = 0;
     rt_thread_t led_thread = rt_thread_create("led_th", thread_entry, &led_thread_arg, 1024, 25, 10);
     rt_thread_startup(led_thread);
-    rt_thread_t web_cam_thread = rt_thread_create("web_cam_th", http_mjpeg_server, &web_cam_thread_arg, 8192, 5, 10);
-    rt_thread_startup(web_cam_thread);
+    webcam_init();
     return 0;
 }
 

@@ -15,6 +15,12 @@ config BSP_USING_ENET_PHY_RTL8201
     bool
     default n
 
+if BSP_USING_ETH
+    config LWIP_SUPPORT_CUSTOM_PBUF
+    int
+    default 1
+endif
+
 menu "On-chip Peripheral Drivers"
     config BSP_USING_GPIO
         bool "Enable GPIO"
@@ -600,6 +606,8 @@ menu "On-chip Peripheral Drivers"
        default n
 
        select RT_USING_ETH if BSP_USING_ETH
+       select RT_USING_PHY if BSP_USING_ETH
+
        if BSP_USING_ETH
                config BSP_USING_ETH0
                bool "Enable ETH0"
@@ -956,6 +964,7 @@ menu "On-chip Peripheral Drivers"
        if BSP_USING_USB
             config BSP_USING_USB_DEVICE
                 bool "Enable USB Device"
+                select RT_USING_CACHE
                 default n
             config BSP_USING_USB_HOST
                 bool "Enable USB Host"
@@ -1128,7 +1137,7 @@ endmenu
 
 menu "HPMicro Interrupt Config"
     config HPM_USING_VECTOR_PREEMPTED_MODE
-        bool "Enable Vector and Preempted Mode"
+        bool "Enable Vector and Preempted Mode(experimental)"
         default n
 endmenu
 

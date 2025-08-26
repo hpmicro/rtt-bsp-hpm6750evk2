@@ -19,6 +19,6 @@ typedef enum {
     http_fail,
 }http_sta;
 
-void http_mjpeg_server(void *parameter);
+int webcam_init(void);
 
 #endif

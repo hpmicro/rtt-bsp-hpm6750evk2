@@ -113,6 +113,7 @@ const uint16_t qdtable[256] = {
 #include "qdtable.cdat"
 };
 
+RTT_DECLARE_EXT_ISR_M(BOARD_CAM_IRQ, isr_cam)
 void isr_cam(void)
 {
     rt_base_t level;
@@ -134,8 +135,8 @@ void isr_cam(void)
     }
     rt_hw_interrupt_enable(level);
 }
-RTT_DECLARE_EXT_ISR_M(BOARD_CAM_IRQ, isr_cam)
 
+RTT_DECLARE_EXT_ISR_M(IRQn_JPEG, isr_jpeg)
 void isr_jpeg(void)
 {
     uint32_t status = jpeg_get_status(HPM_JPEG);
@@ -144,7 +145,7 @@ void isr_jpeg(void)
         rt_sem_release(cam_jpeg_sem);
     }
 }
-RTT_DECLARE_EXT_ISR_M(IRQn_JPEG, isr_jpeg)
+
 
 /*
  * sensor configuration

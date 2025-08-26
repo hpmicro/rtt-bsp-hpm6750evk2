@@ -55,6 +55,7 @@ rt_uint8_t newframe = 0;
 int stream_connected;
 ATTR_PLACE_AT_NONCACHEABLE rt_uint8_t jpeg_data[256 * 1024];
 ATTR_PLACE_AT_NONCACHEABLE char index_data_format[2048];
+static rt_sem_t mjpeg_send_sem = RT_NULL;
 
 void http_send_icon(int client) 
 {
@@ -75,7 +76,6 @@ void http_send_icon(int client)
 
 http_sta http_streamer_start(int client, rt_uint8_t count) 
 {
-    int frame_size = 0;
     uint16_t haed_len = 0;
     rt_sprintf(buffer,
                "HTTP/1.1 200 OK\r\n"
@@ -93,14 +93,14 @@ http_sta http_streamer_start(int client, rt_uint8_t count)
 
 http_sta http_send_streamer(int client) 
 {
-    int32_t frame_size = 0, send_sta;
+    uint32_t frame_size = 0;
     uint16_t haed_len = 0;
     uint32_t aligned_len = 0;
 
     if (get_cam_jpeg_data(jpeg_data, &frame_size) == RT_FALSE) {
         return cam_timeout;
     }
-    if (frame_size <= 0) {
+    if (frame_size == 0) {
         return cam_timeout;
     }
     if (l1c_dc_is_enabled()) {
@@ -128,31 +128,76 @@ http_sta http_send_streamer(int client)
 
 void http_mjpeg_send(void *parameter) 
 {
-    rt_uint8_t i = 0;
-    void *msg;
     while (1) {
-        if (HTTP_VIDEO_START == video_flag) {
-            if (http_send_streamer(stream_connected) == http_fail) // jpeg
-            {
-                video_flag = HTTP_VIDEO_STOP;
+        if (rt_sem_take(mjpeg_send_sem, RT_WAITING_FOREVER) == RT_EOK) {
+            while (1) {
+                if (http_send_streamer(stream_connected) == http_fail) 
+                {
+                    break;
+                }
+                rt_thread_mdelay(30);
             }
         }
-        rt_thread_mdelay(20);
     }
+}
+
+static void handle_client(void *arg)
+{
+    int client_socket = (int)arg;  // 从参数获取客户端socket
+    char *recv_data = rt_malloc(1024);
+    char *uri;
+    char http_buf[128];
+    if (recv_data == NULL) {
+        closesocket(client_socket);
+        return;
+    }
+    rt_sprintf(http_buf, "GET /?%s=mjpeg HTTP/1.1", BOARD_NAME);
+    while (1) {
+        int bytes_received = recv(client_socket, recv_data, 1024, 0);
+        if (bytes_received <= 0) {
+            rt_kprintf("\r\nClient disconnected, close socket\r\n");
+            break;
+        }
+        recv_data[bytes_received] = '\0';
+        uri = strtok(recv_data, "\r\n");
+        rt_kprintf("\r\nReceived URI: %s\r\n", uri);
+
+        if (strcmp(uri, "GET / HTTP/1.1") == 0) {
+            send(client_socket, http_html_hdr, rt_strlen(http_html_hdr), 0);
+            send(client_socket, index_data_format, rt_strlen(index_data_format), 0);
+            closesocket(client_socket);
+            break;
+        } else if (strcmp(uri, http_buf) == 0) {
+            if (http_streamer_start(client_socket, 0) == http_ok) {
+                rt_kprintf("\r\nMJPEG stream started\r\n");
+                stream_connected = client_socket;
+                rt_thread_mdelay(50);
+                rt_sem_release(mjpeg_send_sem);
+            }
+        } else if (strcmp(uri, "GET /favicon.ico HTTP/1.1") == 0) {
+            http_send_icon(client_socket);
+            closesocket(client_socket);
+            break;
+        } else {
+            rt_kprintf("\r\nUnknown request: %s\r\n", uri);
+            closesocket(client_socket);
+            break;
+        }
+    }
+    rt_free(recv_data);
+    closesocket(client_socket);
+    return;
 }
 
 void http_mjpeg_server(void *parameter) 
 {
-    char *uri;
     char *recv_data;
-    uint32_t sin_size;
-    int sock, bytes_received;
+    int sock;
     struct hostent *host;
     struct sockaddr_in server_addr, client_addr;
     rt_base_t stop = 0;
     struct netdev *web_netdev = RT_NULL;
     char *ip_addr_str = RT_NULL;
-    uint8_t http_buf[128];
     jepg_cam_init();
     recv_data = rt_malloc(1024);
     if (recv_data == NULL) {
@@ -201,45 +246,26 @@ void http_mjpeg_server(void *parameter)
         return;
     }
 
-    rt_kprintf("WebServer Waiting for client on port 80...\n");
+    rt_kprintf("WebServer Waiting for client on port %d...\n", WEB_SERVER_PORT);
     while (stop != 1) {
-        sin_size = sizeof(struct sockaddr_in);
-        /* socket */
-        stream_connected = accept(sock, (struct sockaddr *)&client_addr, &sin_size);
-        /* socket */
-        rt_kprintf("\nStreamConnected=%d,%s , %d\r\n", stream_connected,
-               inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
-        /* client_addr */
-        rt_sprintf(http_buf, "GET /?%s=mjpeg HTTP/1.1", BOARD_NAME);
-        while (1) {
-            /* stream_connected socket*/
-            bytes_received = recv(stream_connected, recv_data, 1024, 0); //
-            if (bytes_received <= 0) {
-                closesocket(stream_connected); // stream_connected socket
-                rt_kprintf("\r\nbytes_received <= 0,lwip close...\n");
-                break;
-            }
-            recv_data[bytes_received] = '\0'; //
-            uri = strtok(recv_data, "\r\n");
-            rt_kprintf("\r\nuri=%s\r\n", uri);
-            if (strcmp((const char *)uri, "GET / HTTP/1.1") == 0) {
-                send(stream_connected, http_html_hdr, rt_strlen(http_html_hdr), 0);
-                send(stream_connected, index_data_format, rt_strlen(index_data_format), 0);
-                closesocket(stream_connected);
-            } else if (strcmp((const char *)uri, http_buf) == 0) {
-                if (http_streamer_start(stream_connected, 0) == http_ok) {
-                    rt_kprintf("\r\n Now Ok!!\r\n");
-                    rt_thread_mdelay(50);
-                    video_flag = HTTP_VIDEO_START;
-                    http_mjpeg_send(NULL);
-                }
-            } else if (strcmp((const char *)uri, "GET /favicon.ico HTTP/1.1") ==
-                       0) {
-                http_send_icon(stream_connected);
+        uint32_t sin_size = sizeof(struct sockaddr_in);
+        int client_socket = accept(sock, (struct sockaddr *)&client_addr, &sin_size);
 
-            } else {
-                rt_kprintf("\r\n%s\r\n", uri);
-            }
+        if (client_socket == -1) {
+            rt_kprintf("\r\nAccept error\r\n");
+            continue;
+        }
+
+        rt_kprintf("\nNew client connected: %s:%d\r\n", 
+                 inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
+
+        rt_thread_t client_thread = rt_thread_create( "cli_th",  handle_client,  (void *)client_socket, 2048, 15, 10);
+
+        if (client_thread != RT_NULL) {
+            rt_thread_startup(client_thread);
+        } else {
+            rt_kprintf("Create client thread failed, close socket\r\n");
+            closesocket(client_socket);
         }
     }
 
@@ -250,4 +276,31 @@ void http_mjpeg_server(void *parameter)
 }
 
 
-
+int webcam_init(void)
+{
+    static uint32_t web_cam_thread_arg = 0;
+    if (mjpeg_send_sem == RT_NULL)
+    {
+        mjpeg_send_sem = rt_sem_create("mjpeg_sem", 0, RT_IPC_FLAG_FIFO);
+        if (mjpeg_send_sem == RT_NULL)
+        {
+            rt_kprintf("Error: Create mjpeg semaphore failed!\n");
+            return RT_ERROR;
+        }
+    }
+    rt_thread_t web_cam_server_thread = rt_thread_create("web_server_th", http_mjpeg_server, &web_cam_thread_arg, 8192, 5, 10);
+    if (web_cam_server_thread != RT_NULL) {
+        rt_thread_startup(web_cam_server_thread);
+    } else {
+        rt_kprintf("Create web_cam server thread failed!\n");
+        return RT_ERROR;
+    }
+    rt_thread_t mjpeg_send_thread  = rt_thread_create("mjpeg_send", http_mjpeg_send, &web_cam_thread_arg, 8192, 5, 10);
+    if (mjpeg_send_thread  != RT_NULL) {
+        rt_thread_startup(mjpeg_send_thread);
+    } else {
+        rt_kprintf("Create mjpeg send thread failed!\n");
+        return RT_ERROR;
+    }
+    return RT_EOK;
+}
