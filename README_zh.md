@@ -17,7 +17,7 @@ HPM6750EVK2 开发板的 RT-Thread Studio 板级支持包
 - lv_demo_widgets
 - sdcard_demo
 - timer_demo
-- uart_dma_demo
+- uart_interrupt_demo
 - usb_device_generic_hid
 - usb_host_msc_udisk
 - web_camera_demo

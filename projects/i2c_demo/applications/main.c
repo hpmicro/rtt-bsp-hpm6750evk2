@@ -118,6 +118,7 @@ static int eeprom_i2c(int argc, char *argv[])
         rt_kprintf("0x%02x ", rd_data[i]);
     }
     rt_kprintf("\n");
+    return 0;
 }
 MSH_CMD_EXPORT(eeprom_i2c, "eeprom_i2c 0x50");
 

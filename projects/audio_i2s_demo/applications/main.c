@@ -9,7 +9,7 @@
 #include <rtdevice.h>
 #include "rtt_board.h"
 
-#include "drivers/audio.h"
+#include "drivers/dev_audio.h"
 #include "board.h"
 #include "hpm_i2s_drv.h"
 #include "drv_i2s.h"

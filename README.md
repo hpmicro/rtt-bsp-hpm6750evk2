@@ -16,7 +16,7 @@ RT-Thread Studio BSP for HPM6750EVK2 Board
 - lv_demo_widgets
 - sdcard_demo
 - timer_demo
-- uart_dma_demo
+- uart_interrupt_demo
 - usb_device_generic_hid
 - usb_host_msc_udisk
 - web_camera_demo
